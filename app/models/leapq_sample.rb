@@ -1,3 +1,3 @@
 class LeapqSample < ApplicationRecord
-	enum status: [:questionary, :totest, :tested]
+  enum status: [:questionary, :totest, :tested]
 end

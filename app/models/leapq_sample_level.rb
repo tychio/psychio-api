@@ -1,0 +1,2 @@
+class LeapqSampleLevel < ApplicationRecord
+end

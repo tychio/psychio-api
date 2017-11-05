@@ -1,0 +1,2 @@
+class LeapqSampleInfo < ApplicationRecord
+end

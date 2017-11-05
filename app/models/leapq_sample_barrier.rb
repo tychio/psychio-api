@@ -1,0 +1,2 @@
+class LeapqSampleBarrier < ApplicationRecord
+end

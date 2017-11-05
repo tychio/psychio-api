@@ -1,0 +1,2 @@
+class LeapqSampleBilingual < ApplicationRecord
+end

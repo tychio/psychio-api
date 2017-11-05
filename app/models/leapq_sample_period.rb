@@ -1,0 +1,2 @@
+class LeapqSamplePeriod < ApplicationRecord
+end

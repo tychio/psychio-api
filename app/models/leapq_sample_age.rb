@@ -1,0 +1,2 @@
+class LeapqSampleAge < ApplicationRecord
+end
