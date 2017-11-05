@@ -3,6 +3,9 @@ db:
   container_name: psychio-db
   ports:
     - "3306:3306"
+  volumes:
+    - ./docker/mysql/database:/var/lib/mysql
+    - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
   environment:
     - "MYSQL_ROOT_PASSWORD=root"
 api:
