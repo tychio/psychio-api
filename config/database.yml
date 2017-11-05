@@ -52,3 +52,4 @@ production:
   database: psychio
   username: psychio
   password: <%= ENV['API_DATABASE_PASSWORD'] %>
+  host: 172.27.0.5
