@@ -1,13 +1,13 @@
 db:
   image: mysql:5.7
-  container_name: leapq-db
+  container_name: psychio-db
   ports:
     - "3306:3306"
   environment:
     - "MYSQL_ROOT_PASSWORD=root"
 api:
   build: .
-  container_name: leapq-api
+  container_name: psychio-api
   command: bundle exec rails s -p 3000 -b '0.0.0.0'
   volumes:
     - .:/api
