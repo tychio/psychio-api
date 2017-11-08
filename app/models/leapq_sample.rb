@@ -38,4 +38,8 @@ class LeapqSample < ApplicationRecord
     sampleLanguageIds = LeapqSampleLanguage.mapper(sampleLanguages)
     LeapqSamplePeriod.save(self.id, periods, sampleLanguageIds)
   end
+
+  def save_bilingual bilingual
+    LeapqSampleBilingual.save(self.id, bilingual)
+  end
 end

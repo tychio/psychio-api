@@ -9,6 +9,7 @@ class QuestionariesController < ApplicationController
     sample.save_barriers(data[:levelBarriers])
     sample.save_ages(data[:timeAges], sampleLanguages)
     sample.save_periods(data[:timeAges], sampleLanguages)
+    sample.save_bilingual(data[:bilingual])
 
     render json: data
   end
