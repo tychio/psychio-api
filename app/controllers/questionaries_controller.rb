@@ -4,7 +4,8 @@ class QuestionariesController < ApplicationController
     data = params[:data]
     sample = LeapqSample.signup(data[:info])
     sample.fill_info(data[:info])
+    sampleLanguages = sample.sort_languages(data)
 
-    render json: data
+    render json: sampleLanguages
   end
 end

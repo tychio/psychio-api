@@ -74,26 +74,26 @@ ActiveRecord::Schema.define(version: 20171108110940) do
 
   create_table "leapq_sample_languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sample_id"
-    t.integer  "language_id_id"
-    t.integer  "level_seq",      limit: 3
-    t.integer  "time_seq",       limit: 3
-    t.datetime "created_at",               default: -> { "CURRENT_TIMESTAMP" }
-    t.datetime "updated_at",               default: -> { "CURRENT_TIMESTAMP" }
-    t.index ["language_id_id"], name: "index_leapq_sample_languages_on_language_id_id", using: :btree
+    t.integer  "language_id"
+    t.integer  "level_seq",   limit: 3
+    t.integer  "time_seq",    limit: 3
+    t.datetime "created_at",            default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "updated_at",            default: -> { "CURRENT_TIMESTAMP" }
+    t.index ["language_id"], name: "index_leapq_sample_languages_on_language_id", using: :btree
     t.index ["sample_id"], name: "index_leapq_sample_languages_on_sample_id", using: :btree
   end
 
   create_table "leapq_sample_levels", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sample_id"
-    t.integer  "sample_language_id_id"
+    t.integer  "sample_language_id"
     t.integer  "touch"
     t.integer  "read"
     t.integer  "speak"
     t.integer  "write"
-    t.datetime "created_at",            default: -> { "CURRENT_TIMESTAMP" }
-    t.datetime "updated_at",            default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "created_at",         default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "updated_at",         default: -> { "CURRENT_TIMESTAMP" }
     t.index ["sample_id"], name: "index_leapq_sample_levels_on_sample_id", using: :btree
-    t.index ["sample_language_id_id"], name: "index_leapq_sample_levels_on_sample_language_id_id", using: :btree
+    t.index ["sample_language_id"], name: "index_leapq_sample_levels_on_sample_language_id", using: :btree
   end
 
   create_table "leapq_sample_periods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -153,9 +153,9 @@ ActiveRecord::Schema.define(version: 20171108110940) do
   add_foreign_key "leapq_sample_bilinguals", "leapq_sample_languages", column: "second_language_id"
   add_foreign_key "leapq_sample_bilinguals", "leapq_samples", column: "sample_id"
   add_foreign_key "leapq_sample_infos", "leapq_samples", column: "sample_id"
-  add_foreign_key "leapq_sample_languages", "leapq_languages", column: "language_id_id"
+  add_foreign_key "leapq_sample_languages", "leapq_languages", column: "language_id"
   add_foreign_key "leapq_sample_languages", "leapq_samples", column: "sample_id"
-  add_foreign_key "leapq_sample_levels", "leapq_sample_languages", column: "sample_language_id_id"
+  add_foreign_key "leapq_sample_levels", "leapq_sample_languages", column: "sample_language_id"
   add_foreign_key "leapq_sample_levels", "leapq_samples", column: "sample_id"
   add_foreign_key "leapq_sample_periods", "leapq_sample_languages"
   add_foreign_key "leapq_sample_periods", "leapq_samples", column: "sample_id"
