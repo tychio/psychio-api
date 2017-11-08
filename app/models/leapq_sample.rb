@@ -9,4 +9,8 @@ class LeapqSample < ApplicationRecord
       :status => :questionary
     })
   end
+
+  def fill_info info
+    LeapqSampleInfo.fill(self.id, info)
+  end
 end

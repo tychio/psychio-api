@@ -3,7 +3,7 @@ class QuestionariesController < ApplicationController
   def create
     data = params[:data]
     sample = LeapqSample.signup(data[:info])
-    LeapqSampleInfo.fill(sample[:id], data[:info])
+    sample.fill_info(data[:info])
 
     render json: data
   end
