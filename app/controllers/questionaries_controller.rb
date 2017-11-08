@@ -5,6 +5,7 @@ class QuestionariesController < ApplicationController
     sample = LeapqSample.signup(data[:info])
     sample.fill_info(data[:info])
     sampleLanguages = sample.sort_languages(data)
+    sample.save_rates(data[:levelRates], sampleLanguages)
 
     render json: sampleLanguages
   end

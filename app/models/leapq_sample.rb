@@ -14,9 +14,13 @@ class LeapqSample < ApplicationRecord
     LeapqSampleInfo.fill(self.id, info)
   end
 
-  def sort_languages (data)
+  def sort_languages data
     levelLangs = data[:levelLanguages]
     timeLangs = data[:timeLanguages]
     LeapqSampleLanguage.save(self.id, levelLangs, timeLangs)
+  end
+
+  def save_rates (rates, sampleLanguages)
+    LeapqSampleLevel.save(self.id, rates, sampleLanguages)
   end
 end

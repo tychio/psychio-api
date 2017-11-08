@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20171108110940) do
   create_table "leapq_sample_levels", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sample_id"
     t.integer  "sample_language_id"
-    t.integer  "touch"
+    t.integer  "first"
     t.integer  "read"
     t.integer  "speak"
     t.integer  "write"
