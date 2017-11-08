@@ -21,10 +21,21 @@ class LeapqSample < ApplicationRecord
   end
 
   def save_rates (rates, sampleLanguages)
-    LeapqSampleLevel.save(self.id, rates, sampleLanguages)
+    sampleLanguageIds = LeapqSampleLanguage.mapper(sampleLanguages)
+    LeapqSampleLevel.save(self.id, rates, sampleLanguageIds)
   end
 
-  def save_barriers (barriers)
+  def save_barriers barriers
     LeapqSampleBarrier.save(self.id, barriers)
+  end
+
+  def save_ages (ages, sampleLanguages)
+    sampleLanguageIds = LeapqSampleLanguage.mapper(sampleLanguages)
+    LeapqSampleAge.save(self.id, ages, sampleLanguageIds)
+  end
+
+  def save_periods (periods, sampleLanguages)
+    sampleLanguageIds = LeapqSampleLanguage.mapper(sampleLanguages)
+    LeapqSamplePeriod.save(self.id, periods, sampleLanguageIds)
   end
 end

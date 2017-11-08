@@ -10,4 +10,12 @@ class LeapqSampleLanguage < ApplicationRecord
       })
     end
   end
+
+  def self.mapper sampleLanguages
+    sampleLanguageIds = {}
+    sampleLanguages.each do |sampleLanguage|
+      sampleLanguageIds[sampleLanguage[:language_id]] = sampleLanguage[:id]
+    end
+    sampleLanguageIds
+  end
 end

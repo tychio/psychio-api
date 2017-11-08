@@ -21,15 +21,15 @@ ActiveRecord::Schema.define(version: 20171108110940) do
 
   create_table "leapq_sample_ages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sample_id"
-    t.integer  "leapq_sample_language_id"
+    t.integer  "sample_language_id"
     t.integer  "first"
     t.integer  "study"
     t.integer  "speak"
     t.integer  "normal"
-    t.datetime "created_at",               default: -> { "CURRENT_TIMESTAMP" }
-    t.datetime "updated_at",               default: -> { "CURRENT_TIMESTAMP" }
-    t.index ["leapq_sample_language_id"], name: "index_leapq_sample_ages_on_leapq_sample_language_id", using: :btree
+    t.datetime "created_at",         default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "updated_at",         default: -> { "CURRENT_TIMESTAMP" }
     t.index ["sample_id"], name: "index_leapq_sample_ages_on_sample_id", using: :btree
+    t.index ["sample_language_id"], name: "index_leapq_sample_ages_on_sample_language_id", using: :btree
   end
 
   create_table "leapq_sample_barriers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -98,14 +98,14 @@ ActiveRecord::Schema.define(version: 20171108110940) do
 
   create_table "leapq_sample_periods", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sample_id"
-    t.integer  "leapq_sample_language_id"
+    t.integer  "sample_language_id"
     t.integer  "school"
     t.integer  "home"
     t.integer  "community"
-    t.datetime "created_at",               default: -> { "CURRENT_TIMESTAMP" }
-    t.datetime "updated_at",               default: -> { "CURRENT_TIMESTAMP" }
-    t.index ["leapq_sample_language_id"], name: "index_leapq_sample_periods_on_leapq_sample_language_id", using: :btree
+    t.datetime "created_at",         default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "updated_at",         default: -> { "CURRENT_TIMESTAMP" }
     t.index ["sample_id"], name: "index_leapq_sample_periods_on_sample_id", using: :btree
+    t.index ["sample_language_id"], name: "index_leapq_sample_periods_on_sample_language_id", using: :btree
   end
 
   create_table "leapq_sample_scores", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -146,7 +146,7 @@ ActiveRecord::Schema.define(version: 20171108110940) do
     t.datetime "updated_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
-  add_foreign_key "leapq_sample_ages", "leapq_sample_languages"
+  add_foreign_key "leapq_sample_ages", "leapq_sample_languages", column: "sample_language_id"
   add_foreign_key "leapq_sample_ages", "leapq_samples", column: "sample_id"
   add_foreign_key "leapq_sample_barriers", "leapq_samples", column: "sample_id"
   add_foreign_key "leapq_sample_bilinguals", "leapq_sample_languages", column: "first_language_id"
@@ -157,7 +157,7 @@ ActiveRecord::Schema.define(version: 20171108110940) do
   add_foreign_key "leapq_sample_languages", "leapq_samples", column: "sample_id"
   add_foreign_key "leapq_sample_levels", "leapq_sample_languages", column: "sample_language_id"
   add_foreign_key "leapq_sample_levels", "leapq_samples", column: "sample_id"
-  add_foreign_key "leapq_sample_periods", "leapq_sample_languages"
+  add_foreign_key "leapq_sample_periods", "leapq_sample_languages", column: "sample_language_id"
   add_foreign_key "leapq_sample_periods", "leapq_samples", column: "sample_id"
   add_foreign_key "leapq_sample_scores", "leapq_samples", column: "sample_id"
 end
