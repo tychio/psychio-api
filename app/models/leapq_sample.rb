@@ -23,4 +23,8 @@ class LeapqSample < ApplicationRecord
   def save_rates (rates, sampleLanguages)
     LeapqSampleLevel.save(self.id, rates, sampleLanguages)
   end
+
+  def save_barriers (barriers)
+    LeapqSampleBarrier.save(self.id, barriers)
+  end
 end
