@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20171108110940) do
 
   create_table "leapq_sample_scores", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sample_id"
+    t.integer  "sample_language_id"
     t.integer  "level_speak"
     t.integer  "level_listen"
     t.integer  "level_read"
@@ -131,9 +132,10 @@ ActiveRecord::Schema.define(version: 20171108110940) do
     t.integer  "touch_social"
     t.integer  "oral_speak"
     t.integer  "oral_listen"
-    t.datetime "created_at",       default: -> { "CURRENT_TIMESTAMP" }
-    t.datetime "updated_at",       default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "created_at",         default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "updated_at",         default: -> { "CURRENT_TIMESTAMP" }
     t.index ["sample_id"], name: "index_leapq_sample_scores_on_sample_id", using: :btree
+    t.index ["sample_language_id"], name: "index_leapq_sample_scores_on_sample_language_id", using: :btree
   end
 
   create_table "leapq_samples", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -159,5 +161,6 @@ ActiveRecord::Schema.define(version: 20171108110940) do
   add_foreign_key "leapq_sample_levels", "leapq_samples", column: "sample_id"
   add_foreign_key "leapq_sample_periods", "leapq_sample_languages", column: "sample_language_id"
   add_foreign_key "leapq_sample_periods", "leapq_samples", column: "sample_id"
+  add_foreign_key "leapq_sample_scores", "leapq_sample_languages", column: "sample_language_id"
   add_foreign_key "leapq_sample_scores", "leapq_samples", column: "sample_id"
 end

@@ -2,6 +2,7 @@ class CreateLeapqSampleScores < ActiveRecord::Migration[5.0]
   def change
     create_table :leapq_sample_scores do |t|
       t.references :sample, foreign_key: {to_table: :leapq_samples}
+      t.references :sample_language, foreign_key: {to_table: :leapq_sample_languages}
       t.integer :level_speak
       t.integer :level_listen
       t.integer :level_read
