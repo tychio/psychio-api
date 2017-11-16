@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171116133946) do
+ActiveRecord::Schema.define(version: 20171116153736) do
 
   create_table "leapq_languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",       limit: 20
@@ -49,8 +49,9 @@ ActiveRecord::Schema.define(version: 20171116133946) do
     t.integer  "first_language_id"
     t.integer  "second_language_id"
     t.integer  "period"
-    t.datetime "created_at",         default: -> { "CURRENT_TIMESTAMP" }
-    t.datetime "updated_at",         default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "created_at",                    default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "updated_at",                    default: -> { "CURRENT_TIMESTAMP" }
+    t.string   "scene",              limit: 20, default: "school"
     t.index ["first_language_id"], name: "index_leapq_sample_bilinguals_on_first_language_id", using: :btree
     t.index ["sample_id"], name: "index_leapq_sample_bilinguals_on_sample_id", using: :btree
     t.index ["second_language_id"], name: "index_leapq_sample_bilinguals_on_second_language_id", using: :btree

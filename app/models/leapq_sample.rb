@@ -39,8 +39,8 @@ class LeapqSample < ApplicationRecord
     LeapqSamplePeriod.save(self.id, periods, sampleLanguageIds)
   end
 
-  def save_bilingual bilingual
-    LeapqSampleBilingual.save(self.id, bilingual)
+  def save_bilinguals bilinguals
+    LeapqSampleBilingual.save(self.id, bilinguals)
   end
 
   def mark (scores, sampleLanguages)
