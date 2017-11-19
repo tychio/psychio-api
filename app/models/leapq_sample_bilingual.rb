@@ -1,15 +1,17 @@
 class LeapqSampleBilingual < ApplicationRecord
   def self.save (sampleId, billinguals)
     billinguals.each do |scene, billingual|
-      lanuages = billingual[:languages]
-      if lanuages
-        self.create({
-          :scene => scene,
-          :sample_id => sampleId,
-          :first_language_id => LeapqLanguage.get_id_by_name(lanuages[0]),
-          :second_language_id => LeapqLanguage.get_id_by_name(lanuages[1]),
-          :period => billingual[:value]
-        })
+      if billingual[:isBilingual]
+        languages = billingual[:languages]
+        if languages
+          self.create({
+            :scene => scene,
+            :sample_id => sampleId,
+            :first_language_id => LeapqLanguage.get_id_by_name(languages[0]),
+            :second_language_id => LeapqLanguage.get_id_by_name(languages[1]),
+            :period => billingual[:value]
+          })
+        end
       end
     end
   end  
