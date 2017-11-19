@@ -4,6 +4,7 @@ class InitLanguages < ActiveRecord::Migration[5.0]
     LeapqLanguage.create({ :name => 'uyghur', :display => '维吾尔语' }) 
     LeapqLanguage.create({ :name => 'english', :display => '英语' }) 
     LeapqLanguage.create({ :name => 'kazakh', :display => '哈萨克语' }) 
+    LeapqLanguage.create({ :name => 'turkey', :display => '土耳其语' }) 
     LeapqLanguage.create({ :name => 'japanese', :display => '日语' }) 
     LeapqLanguage.create({ :name => 'korean', :display => '韩语/朝鲜语' }) 
     LeapqLanguage.create({ :name => 'french', :display => '法语' }) 
