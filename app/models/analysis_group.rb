@@ -3,6 +3,7 @@ class AnalysisGroup < ApplicationRecord
     samples = LeapqSample.where(:is_active => 1)
     samples.each do |sample|
       sample_detail = sample.get
+      comment = [sample_detail[:first_name], sample_detail[:last_name]].join " "
       self.create({
         :phone => sample[:phone],
         :qq => sample[:qq],
@@ -29,7 +30,7 @@ class AnalysisGroup < ApplicationRecord
         :lang2_speaking_self => 0,
         :lang1_listening_self => 0,
         :lang2_listening_self => 0,
-        :name => [sample_detail[:first_name], sample_detail[:last_name]].join " "
+        :name => comment
       })
     end
   end
