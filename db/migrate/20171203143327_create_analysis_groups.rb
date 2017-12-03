@@ -23,13 +23,15 @@ class CreateAnalysisGroups < ActiveRecord::Migration[5.0]
       t.integer :lang2_start_age
       t.integer :lang1_learn_age
       t.integer :lang2_learn_age
-      t.integer :lang1_l_instrcution_age
-      t.integer :lang2_l_instrcution_age
-      t.integer :lang1_c_instrcution_age
-      t.integer :lang2_c_instrcution_age
+      t.integer :lang1_l_instruction_age
+      t.integer :lang2_l_instruction_age
+      t.integer :lang1_c_instruction_age
+      t.integer :lang2_c_instruction_age
 
       t.timestamps :updated_at, default: -> {'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'}
       t.datetime :created_at, :null=>false, default: -> {'CURRENT_TIMESTAMP'}
     end
+
+    add_index :analysis_groups, [:phone, :qq, :wechat], unique: true
   end
 end

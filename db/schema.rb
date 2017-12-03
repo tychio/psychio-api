@@ -35,12 +35,13 @@ ActiveRecord::Schema.define(version: 20171203143327) do
     t.integer  "lang2_start_age"
     t.integer  "lang1_learn_age"
     t.integer  "lang2_learn_age"
-    t.integer  "lang1_l_instrcution_age"
-    t.integer  "lang2_l_instrcution_age"
-    t.integer  "lang1_c_instrcution_age"
-    t.integer  "lang2_c_instrcution_age"
+    t.integer  "lang1_l_instruction_age"
+    t.integer  "lang2_l_instruction_age"
+    t.integer  "lang1_c_instruction_age"
+    t.integer  "lang2_c_instruction_age"
     t.datetime "created_at",                         default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at",                         default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["phone", "qq", "wechat"], name: "index_analysis_groups_on_phone_and_qq_and_wechat", unique: true, using: :btree
   end
 
   create_table "leapq_languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
