@@ -44,4 +44,15 @@ class LeapqSampleTest < ActiveSupport::TestCase
     assert_equal(35, ages[:lang2_l_instruction_age])
     assert_equal(45, ages[:lang2_c_instruction_age])
   end
+
+  test "get scores" do
+    scores = @sample[:scores]
+    assert_equal(55, scores[:lang1_speaking_self])
+    assert_equal(70, scores[:lang1_listening_self])
+    assert_equal(25, scores[:lang1_reading_self])
+
+    assert_equal(20, scores[:lang2_speaking_self])
+    assert_equal(45, scores[:lang2_listening_self])
+    assert_equal(30, scores[:lang2_reading_self])
+  end
 end

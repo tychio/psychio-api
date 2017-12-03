@@ -4,6 +4,7 @@ class LeapqSample < ApplicationRecord
   has_one :leapq_sample_info, :foreign_key => 'sample_id'
   has_many :leapq_sample_languages, :foreign_key => 'sample_id'
   has_many :leapq_sample_levels, :foreign_key => 'sample_id'
+  has_many :leapq_sample_scores, :foreign_key => 'sample_id'
   has_many :leapq_sample_ages, :foreign_key => 'sample_id'
 
   def self.signup info
@@ -18,12 +19,14 @@ class LeapqSample < ApplicationRecord
   def get
     languageIds = prepare_language_ids
     levels = prepare_levels languageIds
+    scores = prepare_scores languageIds
     ages = prepare_ages languageIds
 
     {
       :info => self.leapq_sample_info,
       :languages => languageIds,
       :levels => levels,
+      :scores => scores,
       :ages => ages
     }
   end
@@ -105,6 +108,24 @@ class LeapqSample < ApplicationRecord
     values
   end
 
+  def prepare_scores languageIds
+    values = {}
+    scores = self.leapq_sample_scores
+    scores.each do |score|
+      if score[:sample_language_id] == languageIds[:time][:lang1]
+        values[:lang1_reading_self] = score[:level_read]
+        values[:lang1_speaking_self] = score[:level_speak]
+        values[:lang1_listening_self] = score[:level_listen]
+      elsif score[:sample_language_id] == languageIds[:time][:lang2]
+        values[:lang2_reading_self] = score[:level_read]
+        values[:lang2_speaking_self] = score[:level_speak]
+        values[:lang2_listening_self] = score[:level_listen]
+      end
+    end
+
+    values
+  end
+
   def prepare_ages languageIds
     values = {}
     ages = self.leapq_sample_ages
@@ -121,7 +142,7 @@ class LeapqSample < ApplicationRecord
         values[:lang2_c_instruction_age] = age[:normal]
       end
     end
-    
+
     values
   end
 end
