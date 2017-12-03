@@ -13,7 +13,9 @@ class LeapqSample < ApplicationRecord
   end
 
   def get
-    self.leapq_sample_info
+    {
+      :info => self.leapq_sample_info
+    }
   end
 
   def fill_info info
