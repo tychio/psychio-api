@@ -1,6 +1,8 @@
 class LeapqSample < ApplicationRecord
   enum status: [:questionary, :totest, :tested]
 
+  has_one :leapq_sample_info, :foreign_key => 'sample_id'
+
   def self.signup info
     self.create({
       :phone => info[:phone],
@@ -8,6 +10,10 @@ class LeapqSample < ApplicationRecord
       :qq => info[:qq],
       :status => :questionary
     })
+  end
+
+  def get
+    self.leapq_sample_info
   end
 
   def fill_info info

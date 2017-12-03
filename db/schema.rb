@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171203133217) do
+ActiveRecord::Schema.define(version: 20171203143327) do
 
   create_table "analysis_group", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name",                    limit: 50
@@ -39,6 +39,11 @@ ActiveRecord::Schema.define(version: 20171203133217) do
     t.integer "lang2_l_instrcution_age"
     t.integer "lang1_c_instrcution_age"
     t.integer "lang2_c_instrcution_age"
+  end
+
+  create_table "analysis_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "leapq_languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

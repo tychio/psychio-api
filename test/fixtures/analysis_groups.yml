@@ -4,12 +4,8 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: 
-  id: 1
-  phone: '15991133445'
-  qq: '1235345'
-  wechat: 'c1235345'
-  is_active: 1
+one: {}
+# column: value
 #
 two: {}
 # column: value
