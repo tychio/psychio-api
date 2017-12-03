@@ -2,6 +2,8 @@ class LeapqSample < ApplicationRecord
   enum status: [:questionary, :totest, :tested]
 
   has_one :leapq_sample_info, :foreign_key => 'sample_id'
+  has_many :leapq_sample_languages, :foreign_key => 'sample_id'
+  has_many :leapq_sample_levels, :foreign_key => 'sample_id'
 
   def self.signup info
     self.create({
@@ -13,8 +15,12 @@ class LeapqSample < ApplicationRecord
   end
 
   def get
+    values = {}
+    languageIds = prepare_language_ids
+
     {
-      :info => self.leapq_sample_info
+      :info => self.leapq_sample_info,
+      :languages => languageIds
     }
   end
 
@@ -54,5 +60,24 @@ class LeapqSample < ApplicationRecord
   def mark (scores, sampleLanguages)
     sampleLanguageIds = LeapqSampleLanguage.mapper(sampleLanguages)
     LeapqSampleScore.save(self.id, scores, sampleLanguageIds)
+  end
+
+  private
+  def prepare_language_ids
+    languageIds = {
+      :level => {},
+      :time => {}
+    }
+    languages = self.leapq_sample_languages
+    languages.each do |language|
+      ["level", "time"].each do |type|
+        seq = language["#{type}_seq".to_sym]
+        if language["#{type}_seq".to_sym] < 2
+          languageIds[type.to_sym]["lang#{seq + 1}".to_sym] = language[:id]
+        end
+      end
+    end
+
+    languageIds
   end
 end
