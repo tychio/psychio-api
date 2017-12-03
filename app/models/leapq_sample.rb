@@ -15,12 +15,13 @@ class LeapqSample < ApplicationRecord
   end
 
   def get
-    values = {}
     languageIds = prepare_language_ids
+    levels = prepare_levels languageIds
 
     {
       :info => self.leapq_sample_info,
-      :languages => languageIds
+      :languages => languageIds,
+      :levels => levels
     }
   end
 
@@ -79,5 +80,25 @@ class LeapqSample < ApplicationRecord
     end
 
     languageIds
+  end
+
+  def prepare_levels languageIds
+    values = {}
+    levels = self.leapq_sample_levels
+    levels.each do |level|
+      if level[:sample_language_id] == languageIds[:level][:lang1]
+        values[:lang1_reading_use] = level[:read]
+        values[:lang1_speaking_use] = level[:speak]
+        values[:lang1_listening_use] = level[:speak]
+        values[:lang1_writing_use] = level[:write]
+      elsif level[:sample_language_id] == languageIds[:level][:lang2]
+        values[:lang2_reading_use] = level[:read]
+        values[:lang2_speaking_use] = level[:speak]
+        values[:lang2_listening_use] = level[:speak]
+        values[:lang2_writing_use] = level[:write]
+      end
+    end
+
+    values
   end
 end
