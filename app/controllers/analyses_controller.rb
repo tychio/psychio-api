@@ -1,7 +1,8 @@
 class AnalysesController < ApplicationController
-	skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
-	def show
-		render json: {}
-	end
+  def show
+    standard = AnalysisGroup.standard
+    render json: standard
+  end
 end
