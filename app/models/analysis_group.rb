@@ -63,17 +63,27 @@ class AnalysisGroup < ApplicationRecord
           score[:score][key] = value + skewing
         end
       end
+      sumSelfScore = 0
+      sumUseScore = 0
       [
         :reading_use,
         :speaking_use,
         :listening_use,
-        :writing_use,
+        :writing_use
+      ].each do |key|
+        score[key] = self.rate(score[:score], key)
+        sumUseScore += score[key]
+      end
+      [
         :reading_self,
         :speaking_self,
         :listening_self
       ].each do |key|
         score[key] = self.rate(score[:score], key)
+        sumSelfScore += score[key]
       end
+      score[:score] = (((sumSelfScore / 3).to_f + (sumUseScore / 4).to_f) / 2).to_f
+      score[:balance] = (score[:score] - 1).abs
     end
     scores
   end
