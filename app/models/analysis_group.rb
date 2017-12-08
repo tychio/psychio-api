@@ -114,6 +114,14 @@ class AnalysisGroup < ApplicationRecord
         :phone => record[:phone],
         :qq => record[:qq],
         :wechat => record[:wechat],
+        :lang1_start_age => record[:lang1_start_age],
+        :lang2_start_age => record[:lang2_start_age],
+        :lang1_learn_age => record[:lang1_learn_age],
+        :lang2_learn_age => record[:lang2_learn_age],
+        :lang1_l_instruction_age => record[:lang1_l_instruction_age],
+        :lang2_l_instruction_age => record[:lang2_l_instruction_age],
+        :lang1_c_instruction_age => record[:lang1_c_instruction_age],
+        :lang2_c_instruction_age => record[:lang2_c_instruction_age],
         :score => score
       }
     end
