@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171203143327) do
+ActiveRecord::Schema.define(version: 20171210055210) do
 
   create_table "analysis_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",                    limit: 50
+    t.text     "comment",                 limit: 65535
     t.string   "phone",                   limit: 20
     t.string   "qq",                      limit: 20
     t.string   "wechat",                  limit: 50
@@ -39,9 +40,21 @@ ActiveRecord::Schema.define(version: 20171203143327) do
     t.integer  "lang2_l_instruction_age"
     t.integer  "lang1_c_instruction_age"
     t.integer  "lang2_c_instruction_age"
-    t.datetime "created_at",                         default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at",                         default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at",                            default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at",                            default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["phone", "qq", "wechat"], name: "index_analysis_groups_on_phone_and_qq_and_wechat", unique: true, using: :btree
+  end
+
+  create_table "experiment_results", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name",       limit: 50
+    t.json     "pic"
+    t.json     "lex_cn"
+    t.json     "lex_ug"
+    t.json     "flanker"
+    t.json     "simon"
+    t.json     "iq"
+    t.datetime "created_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "leapq_languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
