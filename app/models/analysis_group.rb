@@ -9,38 +9,42 @@ class AnalysisGroup < ApplicationRecord
       scores = sample_detail[:scores]
       comment = [info[:first_name], info[:last_name]].join " "
 
-      self.find_or_create_by({
+      record = self.find_or_create_by({
         :phone => sample[:phone],
         :qq => sample[:qq],
         :wechat => sample[:wechat]
-      }) do |group|
-        group.phone = sample[:phone]
-        group.qq = sample[:qq]
-        group.wechat = sample[:wechat]
-        group.lang1_reading_use = levels[:lang1_reading_use]
-        group.lang2_reading_use = levels[:lang2_reading_use]
-        group.lang1_speaking_use = levels[:lang1_speaking_use]
-        group.lang2_speaking_use = levels[:lang2_speaking_use]
-        group.lang1_listening_use = levels[:lang1_listening_use]
-        group.lang2_listening_use = levels[:lang2_listening_use]
-        group.lang1_writing_use = levels[:lang1_writing_use]
-        group.lang2_writing_use = levels[:lang2_writing_use]
-        group.lang1_start_age = ages[:lang1_start_age]
-        group.lang2_start_age = ages[:lang2_start_age]
-        group.lang1_learn_age = ages[:lang1_learn_age]
-        group.lang2_learn_age = ages[:lang2_learn_age]
-        group.lang1_l_instruction_age = ages[:lang1_l_instruction_age]
-        group.lang2_l_instruction_age = ages[:lang2_l_instruction_age]
-        group.lang1_c_instruction_age = ages[:lang1_c_instruction_age]
-        group.lang2_c_instruction_age = ages[:lang2_c_instruction_age]
-        group.lang1_reading_self = scores[:lang1_reading_self]
-        group.lang2_reading_self = scores[:lang2_reading_self]
-        group.lang1_speaking_self = scores[:lang1_speaking_self]
-        group.lang2_speaking_self = scores[:lang2_speaking_self]
-        group.lang1_listening_self = scores[:lang1_listening_self]
-        group.lang2_listening_self = scores[:lang2_listening_self]
-        group.name = comment
-      end
+      })
+
+      reading_use = self.percent(levels[:lang1_reading_use], levels[:lang2_reading_use])
+      speaking_use = self.percent(levels[:lang1_speaking_use], levels[:lang2_speaking_use])
+      listening_use = self.percent(levels[:lang1_listening_use], levels[:lang2_listening_use])
+      writing_use = self.percent(levels[:lang1_writing_use], levels[:lang2_writing_use])
+
+      record.update({
+        :lang1_reading_use => reading_use[0],
+        :lang2_reading_use => reading_use[1],
+        :lang1_speaking_use => speaking_use[0],
+        :lang2_speaking_use => speaking_use[1],
+        :lang1_listening_use => listening_use[0],
+        :lang2_listening_use => listening_use[1],
+        :lang1_writing_use => writing_use[0],
+        :lang2_writing_use => writing_use[1],
+        :lang1_start_age => ages[:lang1_start_age],
+        :lang2_start_age => ages[:lang2_start_age],
+        :lang1_learn_age => ages[:lang1_learn_age],
+        :lang2_learn_age => ages[:lang2_learn_age],
+        :lang1_l_instruction_age => ages[:lang1_l_instruction_age],
+        :lang2_l_instruction_age => ages[:lang2_l_instruction_age],
+        :lang1_c_instruction_age => ages[:lang1_c_instruction_age],
+        :lang2_c_instruction_age => ages[:lang2_c_instruction_age],
+        :lang1_reading_self => scores[:lang1_reading_self],
+        :lang2_reading_self => scores[:lang2_reading_self],
+        :lang1_speaking_self => scores[:lang1_speaking_self],
+        :lang2_speaking_self => scores[:lang2_speaking_self],
+        :lang1_listening_self => scores[:lang1_listening_self],
+        :lang2_listening_self => scores[:lang2_listening_self],
+        :name => comment
+      })
     end
   end
 
@@ -183,5 +187,12 @@ class AnalysisGroup < ApplicationRecord
 
   def self.rate(score, key)
     (score["lang1_#{key.to_s}".to_sym] / score["lang2_#{key.to_s}".to_sym]).to_f
+  end
+
+  def self.percent(percentA, percentB)
+    sum = (percentA + percentB).to_f
+    newPercentA = (percentA.to_f / sum) * 100
+    newPercentB = (percentB.to_f / sum) * 100
+    [newPercentA.round, newPercentB.round]
   end
 end
