@@ -5,4 +5,8 @@ class AnalysesController < ApplicationController
     standard = AnalysisGroup.standard
     render json: standard
   end
+
+  def update
+  	AnalysisGroup.collect
+  end
 end
