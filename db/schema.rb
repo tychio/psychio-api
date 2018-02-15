@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171210055210) do
+ActiveRecord::Schema.define(version: 20180215203733) do
 
   create_table "analysis_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",                    limit: 50
@@ -55,6 +55,20 @@ ActiveRecord::Schema.define(version: 20171210055210) do
     t.json     "iq"
     t.datetime "created_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
+  end
+
+  create_table "experiment_trials", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "key",        limit: 50
+    t.string   "name"
+    t.integer  "seq"
+    t.integer  "type"
+    t.json     "question"
+    t.boolean  "answer"
+    t.integer  "speed"
+    t.json     "raw"
+    t.datetime "created_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["key", "seq", "type"], name: "index_experiment_trials_on_key_and_seq_and_type", unique: true, using: :btree
   end
 
   create_table "leapq_languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
