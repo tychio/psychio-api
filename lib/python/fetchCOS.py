@@ -18,8 +18,7 @@ response = client.list_objects(
     Bucket='results-1255403486',
     Marker='picture-naming/records',
     Prefix='picture-naming',
-    Delimiter='-',
-    MaxKeys=4
+    Delimiter='-'
 )
 
 contents = response['Contents']
