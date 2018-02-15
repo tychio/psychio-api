@@ -1,11 +1,12 @@
 class ExperimentTrial < ApplicationRecord
-  enum status: [:pic, :lex_cn, :lex_ug, :flanker, :simon, :iq]
+  enum kind: [:pic, :lex_cn, :lex_ug, :flanker, :simon, :iq]
 
   def self.import
     results = ExperimentResult.all
     mergedResults = self.merge results
     trials = self.get_trial mergedResults
 
+    self.delete_all
     self.create(trials)
   end
 
@@ -33,7 +34,6 @@ class ExperimentTrial < ApplicationRecord
           self.send "trial_by_#{kind}".to_sym, result[kind] do |trial|
             trial[:key] = name
             trial[:kind] = kind.to_s
-            trial[:raw] = result[kind]
             trials.push trial
           end
         end
@@ -46,6 +46,7 @@ class ExperimentTrial < ApplicationRecord
   def self.trial_by_pic trials
     trials.each_with_index do |trial, index|
       record = {
+        :raw => trial,
         :name => trial['name'],
         :seq => index + 1,
         :question => {
@@ -61,13 +62,73 @@ class ExperimentTrial < ApplicationRecord
   end
 
   def self.trial_by_lex_cn trials
+    trials.each_with_index do |trial, index|
+      record = {
+        :raw => trial,
+        :name => trial['name'],
+        :seq => index + 1,
+        :question => {
+          :real => !trial['isNon'],
+          :lang => trial['language']
+        },
+        :answer => trial['selection'],
+        :speed => trial['response']
+      }
+
+      yield record
+    end
   end
   def self.trial_by_lex_ug trials
+    self.trial_by_lex_cn trials do |trial|
+      yield trial
+    end
   end
   def self.trial_by_flanker trials
+    trials.each_with_index do |trial, index|
+      record = {
+        :raw => trial,
+        :name => "#{trial['type']}_#{trial['direction']}",
+        :seq => index + 1,
+        :question => {
+          :congruent => (trial['type'].eql? 'con'),
+          :direction => (trial['direction'].eql? 'right')
+        },
+        :answer => (trial['selection'].eql? 'right'),
+        :speed => trial['response']
+      }
+
+      yield record
+    end
   end
   def self.trial_by_simon trials
+    trials.each_with_index do |trial, index|
+      record = {
+        :raw => trial,
+        :name => "#{trial['type']}_#{trial['direction']}",
+        :seq => index + 1,
+        :question => {
+          :red => (trial['type'].eql? 'red'),
+          :direction => trial['direction']
+        },
+        :answer => (trial['selection'].eql? 'red'),
+        :speed => trial['response']
+      }
+
+      yield record
+    end
   end
   def self.trial_by_iq trials
+    trials.each_with_index do |trial, index|
+      record = {
+        :raw => trial,
+        :name => trial['name'],
+        :seq => index + 1,
+        :question => trial['answer'],
+        :answer => trial['choice'],
+        :speed => trial['response']
+      }
+
+      yield record
+    end
   end
 end
