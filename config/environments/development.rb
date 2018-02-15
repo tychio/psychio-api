@@ -1,4 +1,7 @@
 Rails.application.configure do
+  # Custom env variable
+  config.tencent_id = ENV.fetch('TENCENT_ID')
+  config.tencent_key = ENV['TENCENT_KEY']
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
