@@ -19,9 +19,9 @@ namespace :sa do
     puts "Imported data into experiment results."
   end
 
-  desc "handle experiment results to trails"
-  task :trail => :environment do
+  desc "handle experiment results to trials"
+  task :trial => :environment do
     ExperimentTrial.import
-    puts "Imported results to trails."
+    puts "Imported results to trials."
   end
 end
