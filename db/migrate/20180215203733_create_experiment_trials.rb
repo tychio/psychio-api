@@ -4,7 +4,7 @@ class CreateExperimentTrials < ActiveRecord::Migration[5.0]
       t.string  :key, :limit => 50
       t.string :name
       t.integer :seq
-      t.integer :type, :default => :pic
+      t.integer :kind, :default => :pic
       t.json :question
       t.boolean :answer
       t.integer :speed
@@ -14,6 +14,6 @@ class CreateExperimentTrials < ActiveRecord::Migration[5.0]
       t.datetime :created_at, :null=>false, default: -> {'CURRENT_TIMESTAMP'}
     end
 
-    add_index :experiment_trials, [:key, :seq, :type], :unique => true
+    add_index :experiment_trials, [:key, :seq, :kind], :unique => true
   end
 end

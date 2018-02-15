@@ -61,14 +61,14 @@ ActiveRecord::Schema.define(version: 20180215203733) do
     t.string   "key",        limit: 50
     t.string   "name"
     t.integer  "seq"
-    t.integer  "type"
+    t.integer  "kind"
     t.json     "question"
     t.boolean  "answer"
     t.integer  "speed"
     t.json     "raw"
     t.datetime "created_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.index ["key", "seq", "type"], name: "index_experiment_trials_on_key_and_seq_and_type", unique: true, using: :btree
+    t.index ["key", "seq", "kind"], name: "index_experiment_trials_on_key_and_seq_and_kind", unique: true, using: :btree
   end
 
   create_table "leapq_languages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
