@@ -37,12 +37,12 @@ class AnalysisGroup < ApplicationRecord
         :lang2_l_instruction_age => ages[:lang2_l_instruction_age],
         :lang1_c_instruction_age => ages[:lang1_c_instruction_age],
         :lang2_c_instruction_age => ages[:lang2_c_instruction_age],
-        :lang1_reading_self => scores[:lang1_reading_self],
-        :lang2_reading_self => scores[:lang2_reading_self],
-        :lang1_speaking_self => scores[:lang1_speaking_self],
-        :lang2_speaking_self => scores[:lang2_speaking_self],
-        :lang1_listening_self => scores[:lang1_listening_self],
-        :lang2_listening_self => scores[:lang2_listening_self]
+        :lang1_reading_self => scores[:lang1_reading_self] - 1,
+        :lang2_reading_self => scores[:lang2_reading_self] - 1,
+        :lang1_speaking_self => scores[:lang1_speaking_self] - 1,
+        :lang2_speaking_self => scores[:lang2_speaking_self] - 1,
+        :lang1_listening_self => scores[:lang1_listening_self] - 1,
+        :lang2_listening_self => scores[:lang2_listening_self] - 1
       })
     end
   end
