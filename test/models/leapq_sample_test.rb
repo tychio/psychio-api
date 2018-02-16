@@ -7,8 +7,8 @@ class LeapqSampleTest < ActiveSupport::TestCase
   end
 
   test "get info" do
-    assert_equal(@sample[:info][:first_name], 'firstn')
-    assert_equal(@sample[:info][:last_name], 'lastn')
+    assert_equal(@sample[:info][:name], 'firstn')
+    assert_equal(@sample[:info][:code], 'A01')
   end
 
   test "get language ids" do

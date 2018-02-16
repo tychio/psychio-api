@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180216091636) do
+ActiveRecord::Schema.define(version: 20180216124050) do
 
   create_table "analysis_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",                    limit: 50
@@ -118,8 +118,8 @@ ActiveRecord::Schema.define(version: 20180216091636) do
 
   create_table "leapq_sample_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "sample_id"
-    t.string   "first_name",     limit: 20
-    t.string   "last_name",      limit: 20
+    t.string   "name",           limit: 20
+    t.string   "code",           limit: 20
     t.date     "birthday"
     t.integer  "age"
     t.boolean  "gender",                    default: false

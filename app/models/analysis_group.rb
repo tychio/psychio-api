@@ -7,7 +7,6 @@ class AnalysisGroup < ApplicationRecord
       levels = sample_detail[:levels]
       ages = sample_detail[:ages]
       scores = sample_detail[:scores]
-      comment = [info[:first_name], info[:last_name]].join " "
 
       record = self.find_or_create_by({
         :phone => sample[:phone],
@@ -21,6 +20,7 @@ class AnalysisGroup < ApplicationRecord
       writing_use = self.percent(levels[:lang1_writing_use], levels[:lang2_writing_use])
 
       record.update({
+        :name => info[:code],
         :lang1_reading_use => reading_use[0],
         :lang2_reading_use => reading_use[1],
         :lang1_speaking_use => speaking_use[0],
@@ -42,8 +42,7 @@ class AnalysisGroup < ApplicationRecord
         :lang1_speaking_self => scores[:lang1_speaking_self],
         :lang2_speaking_self => scores[:lang2_speaking_self],
         :lang1_listening_self => scores[:lang1_listening_self],
-        :lang2_listening_self => scores[:lang2_listening_self],
-        :name => comment
+        :lang2_listening_self => scores[:lang2_listening_self]
       })
     end
   end

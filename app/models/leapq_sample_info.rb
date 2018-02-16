@@ -2,8 +2,8 @@ class LeapqSampleInfo < ApplicationRecord
   def self.fill sampleId, info
     self.create({
       :sample_id => sampleId,
-      :first_name => info[:firstname],
-      :last_name => info[:lastname],
+      :name => info[:name],
+      :code => info[:code],
       :birthday => info[:birthday],
       :age => info[:age],
       :nation => info[:nation],

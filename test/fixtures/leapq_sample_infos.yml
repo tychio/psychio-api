@@ -7,8 +7,8 @@
 one: 
   id: 11
   sample_id: 1
-  first_name: 'firstn'
-  last_name: 'lastn'
+  name: 'firstn'
+  code: 'A01'
 #
 two: {}
 # column: value
