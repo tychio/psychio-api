@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20180215203733) do
     t.integer  "seq"
     t.integer  "kind"
     t.json     "question"
-    t.boolean  "answer"
+    t.integer  "answer"
     t.integer  "speed"
     t.json     "raw"
     t.datetime "created_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false

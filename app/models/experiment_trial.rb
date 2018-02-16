@@ -51,6 +51,7 @@ class ExperimentTrial < ApplicationRecord
         :seq => index + 1,
         :question => {
           :end => trial['isEnd'],
+          :begin => (trial['switch'].eql? 'First'),
           :change => (trial['switch'].eql? 'Changed'),
           :lang => trial['language']
         },
