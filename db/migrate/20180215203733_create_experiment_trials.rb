@@ -6,7 +6,7 @@ class CreateExperimentTrials < ActiveRecord::Migration[5.0]
       t.integer :seq
       t.integer :kind, :default => :pic
       t.json :question
-      t.boolean :answer
+      t.integer :answer
       t.integer :speed
       t.json :raw
       
