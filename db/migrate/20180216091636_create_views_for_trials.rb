@@ -8,7 +8,7 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
         CONCAT(
           IF(JSON_EXTRACT(`et`.`question`,'$.begin'),
             'First',
-            IF(JSON_EXTRACT(`et`.`question`,'$.change'),
+            IF(JSON_EXTRACT(`et`.`question`,'$.switch'),
               'Switch',
               'Nonswitch'
             )
@@ -34,16 +34,16 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
         `et`.`key` AS `Participant_ID`,
         `et`.`seq` AS `No.`,
         CONCAT(
-          IF(JSON_EXTRACT(`et`.`question`,'$.lang') = 'chinese',
-            'C',
-            'U'
-          ),
           IF(JSON_EXTRACT(`et`.`question`,'$.real'),
-            'word',
-            'non'
-          )
+            'Word',
+            'Non'
+          ),
+          CASE JSON_EXTRACT(`et`.`question`,'$.lang')
+            WHEN '"chinese"' THEN 'Cn'
+            WHEN '"uyghur"' THEN 'Ug'
+          END
         ) AS `Stimulates`,
-        `et`.`answer` AS `Response`,
+        IF(`et`.`answer`,'Word', 'Non') AS `Response`,
         IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.real'),1,0)),1,0) AS `Accuracy`,
         `et`.`speed` AS `Speed`,
         IF(`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.real'),1,0),
@@ -59,14 +59,14 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
         `et`.`key` AS `Participant_ID`,
         `et`.`seq` AS `No.`,
         CONCAT(
-          IF(JSON_EXTRACT(`et`.`question`,'$.lang') = 'chinese',
-            'C',
-            'U'
-          ),
           IF(JSON_EXTRACT(`et`.`question`,'$.real'),
-            'word',
-            'non'
-          )
+            'Word',
+            'Non'
+          ),
+          CASE JSON_EXTRACT(`et`.`question`,'$.lang')
+            WHEN '"chinese"' THEN 'Cn'
+            WHEN '"uyghur"' THEN 'Ug'
+          END
         ) AS `Stimulates`,
         `et`.`answer` AS `Response`,
         IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.real'),1,0)),1,0) AS `Accuracy`,
@@ -84,14 +84,15 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
         `et`.`key` AS `Participant_ID`,
         `et`.`seq` AS `No.`,
         CONCAT(
-          IF(JSON_EXTRACT(`et`.`question`,'$.congruent'),
-            'Con',
-            'Incon'
-          ),
-          IF(JSON_EXTRACT(`et`.`question`,'$.direction'),
-            'Right',
-            'Left'
-          )
+          CASE JSON_EXTRACT(`et`.`question`,'$.congruent')
+            WHEN '"con"' THEN 'Con'
+            WHEN '"incon"' THEN 'Incon'
+            WHEN '"neu"' THEN 'Neutral'
+          END,
+          CASE JSON_EXTRACT(`et`.`question`,'$.direction')
+            WHEN '"right"' THEN 'Right'
+            WHEN '"left"' THEN 'Left'
+          END
         ) AS `Stimulates`,
         IF(`et`.`answer`,'Right','Left') AS `Response`,
         IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.direction'),1,0)),1,0) AS `Accuracy`,
@@ -109,17 +110,20 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
         `et`.`key` AS `Participant_ID`,
         `et`.`seq` AS `No.`,
         CONCAT(
-          (CASE JSON_EXTRACT(`et`.`question`,'$.direction') 
-            WHEN '"left"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.red'),'Con','Incon') 
-            WHEN '"right"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.red'),'Incon','Con') 
+          CASE JSON_EXTRACT(`et`.`question`,'$.direction') 
+            WHEN '"left"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'red','Con','Incon') 
+            WHEN '"right"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'blue','Incon','Con') 
             WHEN '"center"' THEN 'Neutral' 
-          END),
-          IF(JSON_EXTRACT(`et`.`question`,'$.red'),'Red','Blue')
+          END,
+          CASE JSON_EXTRACT(`et`.`question`,'$.color')
+            WHEN '"red"' THEN 'Red'
+            WHEN '"blue"' THEN 'Blue'
+          END
         ) AS `Stimulates`,
-        IF(`et`.`answer`,'red','blue') AS `Response`,
-        IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.red'),1,0)),1,0) AS `Accuracy`,
+        IF(`et`.`answer`,'Red','Blue') AS `Response`,
+        IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.color'),1,0)),1,0) AS `Accuracy`,
         `et`.`speed` AS `Speed`,
-        IF(`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.red'),1,0),
+        IF(`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.color'),1,0),
           `et`.`speed`,
           NULL
         ) AS `CorrectResponseSpeed`

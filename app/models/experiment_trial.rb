@@ -52,7 +52,7 @@ class ExperimentTrial < ApplicationRecord
         :question => {
           :end => trial['isEnd'],
           :begin => (trial['switch'].eql? 'First'),
-          :change => (trial['switch'].eql? 'Changed'),
+          :switch => (trial['switch'].eql? 'Changed'),
           :lang => trial['language']
         },
         :speed => trial['response']
@@ -91,8 +91,8 @@ class ExperimentTrial < ApplicationRecord
         :name => "#{trial['type']}_#{trial['direction']}",
         :seq => index + 1,
         :question => {
-          :congruent => (trial['type'].eql? 'con'),
-          :direction => (trial['direction'].eql? 'right')
+          :congruent => trial['type'],
+          :direction => trial['direction']
         },
         :answer => (trial['selection'].eql? 'right'),
         :speed => trial['response']
@@ -108,7 +108,7 @@ class ExperimentTrial < ApplicationRecord
         :name => "#{trial['type']}_#{trial['direction']}",
         :seq => index + 1,
         :question => {
-          :red => (trial['type'].eql? 'red'),
+          :color => trial['type'],
           :direction => trial['direction']
         },
         :answer => (trial['selection'].eql? 'red'),
