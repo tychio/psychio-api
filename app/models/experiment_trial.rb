@@ -1,13 +1,14 @@
 class ExperimentTrial < ApplicationRecord
   enum kind: [:pic, :lex_cn, :lex_ug, :flanker, :simon, :iq]
 
-  def self.import
+  def self.import page
     results = ExperimentResult.all
     mergedResults = self.merge results
     trials = self.get_trial mergedResults
 
-    self.delete_all
-    self.create(trials)
+    size = 10000
+    limitedTrials = trials.slice((page - 1) * size, size)
+    self.create(limitedTrials)
   end
 
   private

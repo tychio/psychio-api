@@ -20,8 +20,8 @@ namespace :sa do
   end
 
   desc "handle experiment results to trials"
-  task :trial => :environment do
-    ExperimentTrial.import
+  task :trial, [:limit] => [:environment] do |t, args|
+    ExperimentTrial.import args[:limit].to_i
     puts "Imported results to trials."
   end
 end
