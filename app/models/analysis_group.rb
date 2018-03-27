@@ -190,8 +190,8 @@ class AnalysisGroup < ApplicationRecord
 
   def self.percent(percentA, percentB)
     sum = (percentA + percentB).to_f
-    newPercentA = (percentA.to_f / sum) * 100
-    newPercentB = (percentB.to_f / sum) * 100
-    [newPercentA.round, newPercentB.round]
+    newPercentA = ((percentA.to_f / sum) * 100).round
+    newPercentB = 100 - newPercentA
+    [newPercentA, newPercentB]
   end
 end
