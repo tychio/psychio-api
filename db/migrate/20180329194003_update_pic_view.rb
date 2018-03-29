@@ -22,7 +22,11 @@ class UpdatePicView < ActiveRecord::Migration[5.0]
             'U'
           ),
           '_', `et`.`name`,
-          '_', `pi`.`chinese`
+          '_', `pi`.`chinese`,
+          IF((JSON_EXTRACT(`et`.`question`,'$.lang') = 'chinese'),
+            '',
+            `pi`.`uyghur`
+          )
         ) AS `Stimulates`,
         `et`.`answer` AS `Response`,
         `et`.`answer` AS `Accuracy`,
