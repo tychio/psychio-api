@@ -32,7 +32,7 @@ class UpdatePicView < ActiveRecord::Migration[5.0]
           NULL
         ) AS `CorrectResponseSpeed`
       FROM `experiment_trials` `et` 
-      LEFT JOIN `pnt_images` `pi` ON `pi`.`name` = `et`.`name`
+      JOIN `pnt_images` `pi` ON `pi`.`name` = `et`.`name`
       WHERE (`et`.`kind` = 0);
     SQL
   end
