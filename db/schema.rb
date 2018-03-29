@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180216124050) do
+ActiveRecord::Schema.define(version: 20180329194003) do
 
   create_table "analysis_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",                    limit: 50
@@ -209,6 +209,13 @@ ActiveRecord::Schema.define(version: 20180216124050) do
     t.boolean  "is_active",             default: true
     t.datetime "created_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at",            default: -> { "CURRENT_TIMESTAMP" }, null: false
+  end
+
+  create_table "pnt_images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.string   "chinese"
+    t.string   "uyghur"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   add_foreign_key "leapq_sample_ages", "leapq_sample_languages", column: "sample_language_id"

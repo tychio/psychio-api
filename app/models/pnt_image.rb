@@ -1,0 +1,2 @@
+class PntImage < ApplicationRecord
+end
