@@ -16,7 +16,9 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           IF((JSON_EXTRACT(`et`.`question`,'$.lang') = 'chinese'),
             'C',
             'U'
-          )
+          ),
+          '_',
+          `et`.`name`
         ) AS `Stimulates`,
         `et`.`answer` AS `Response`,
         `et`.`answer` AS `Accuracy`,
