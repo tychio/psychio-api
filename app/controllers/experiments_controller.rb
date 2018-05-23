@@ -10,6 +10,8 @@ class ExperimentsController < ApplicationController
   def show
   	results = ExperimentTrial.list params[:type].to_sym
 
-  	render json: results
+  	handled_results = results.map { |result| result.to_hash }
+
+  	render json: handled_results
   end
 end

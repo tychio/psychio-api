@@ -13,7 +13,23 @@ class ExperimentTrial < ApplicationRecord
 
   def self.list kind
     trials = self.where({ :kind => kind })
-    trials.group_by {|trial| trial.key }
+    # trials.group_by {|trial| trial.key }
+  end
+
+  def to_hash
+    item = self.attributes.symbolize_keys
+    item[:accuracy] = accuracy
+    item[:correct] = accuracy ? speed : nil
+    item
+  end
+
+  def accuracy
+    case self.kind.to_sym
+    when :lex_ug, :lex_cn
+      !answer.to_i.zero? == question['real']
+    else
+      false
+    end
   end
 
   private
