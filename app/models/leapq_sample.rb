@@ -2,6 +2,7 @@ class LeapqSample < ApplicationRecord
   enum status: [:questionary, :totest, :tested]
 
   has_one :leapq_sample_info, :foreign_key => 'sample_id'
+  has_one :leapq_sample_group, :foreign_key => 'sample_id'
   has_many :leapq_sample_languages, :foreign_key => 'sample_id'
   has_many :leapq_sample_levels, :foreign_key => 'sample_id'
   has_many :leapq_sample_scores, :foreign_key => 'sample_id'

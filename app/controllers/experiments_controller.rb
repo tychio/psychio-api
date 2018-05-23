@@ -8,10 +8,17 @@ class ExperimentsController < ApplicationController
   end
 
   def show
-  	results = ExperimentTrial.list params[:type].to_sym
+    results = ExperimentTrial.list params[:type].to_sym
 
-  	handled_results = results.map { |result| result.to_hash }
+    thresholds = ExperimentTrial.thresholds results
+    grouped_results = results.group_by { |result| result.group }
+    handled_results = Hash.new
+    grouped_results.each do |group_name, results|
+      handled_results[group_name] = results.map do |result|
+        result.to_hash thresholds[group_name]
+      end
+    end
 
-  	render json: handled_results
+    render json: handled_results
   end
 end

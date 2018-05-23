@@ -13,14 +13,42 @@ class ExperimentTrial < ApplicationRecord
 
   def self.list kind
     trials = self.where({ :kind => kind })
-    # trials.group_by {|trial| trial.key }
   end
 
-  def to_hash
+  def to_hash threshold
     item = self.attributes.symbolize_keys
-    item[:accuracy] = accuracy
-    item[:correct] = accuracy ? speed : nil
+    item[:accuracy] = self.accuracy
+    item[:correct] = self.correct
+    item[:min] = threshold[:min]
+    item[:max] = threshold[:max]
+    if self.correct.present?
+      overMax = item[:correct] > threshold[:max]
+      lessMin = item[:correct] < threshold[:min]
+      if overMax || lessMin
+        item[:inlier] = nil
+      else
+        item[:inlier] = item[:correct]
+      end
+    end
     item
+  end
+
+  def self.thresholds records
+    groups = records.group_by { |record| record.group }
+    groups.transform_values do |records|
+      self.threshold records
+    end
+  end
+
+  def group
+    @sample = Rails.cache.fetch("sample_#{self.key}", expires_in: 1.minute) do
+      LeapqSample.find_by({ :phone => self.key})
+    end
+    @sample.leapq_sample_group.group
+  end
+
+  def correct
+     self.accuracy ? self.speed : nil
   end
 
   def accuracy
@@ -33,6 +61,39 @@ class ExperimentTrial < ApplicationRecord
   end
 
   private
+  def self.threshold records
+    accuracy_count = 0  
+    sum = records.sum do |record|
+      correct_speed = record.correct
+      if correct_speed.present?
+        accuracy_count += 1
+        correct_speed
+      else
+        0
+      end
+    end
+
+    mean = (sum / accuracy_count).to_f
+
+    variance = records.sum do |record|
+      correct_speed = record.correct
+      if correct_speed.present?
+        (correct_speed - mean) ** 2
+      else
+        0
+      end
+    end
+
+    standard = Math.sqrt (variance / (accuracy_count - 1)).to_f
+
+    min = mean - (2.5 * standard)
+    max = mean + (2.5 * standard)
+    {
+      :min => min,
+      :max => max
+    }
+  end
+
   def self.merge results
     mergedResults = Hash.new
     results.each_with_index do |result, index|
