@@ -11,6 +11,11 @@ class ExperimentTrial < ApplicationRecord
     self.create(limitedTrials)
   end
 
+  def self.list kind
+    trials = self.where({ :kind => kind })
+    trials.group_by {|trial| trial.key }
+  end
+
   private
   def self.merge results
     mergedResults = Hash.new

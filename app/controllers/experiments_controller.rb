@@ -6,4 +6,10 @@ class ExperimentsController < ApplicationController
 
     render json: true
   end
+
+  def show
+  	results = ExperimentTrial.list params[:type].to_sym
+
+  	render json: results
+  end
 end
