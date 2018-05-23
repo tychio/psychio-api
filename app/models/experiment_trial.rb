@@ -55,6 +55,10 @@ class ExperimentTrial < ApplicationRecord
     case self.kind.to_sym
     when :lex_ug, :lex_cn
       !answer.to_i.zero? == question['real']
+    when :flanker
+      !answer.to_i.zero? == (question['direction'] == 'right')
+    when :simon
+      !answer.to_i.zero? == (question['color'] == 'red')
     else
       false
     end
