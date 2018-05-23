@@ -14,8 +14,11 @@ class ExperimentsController < ApplicationController
     grouped_results = results.group_by { |result| result.group }
     handled_results = Hash.new
     grouped_results.each do |group_name, results|
-      handled_results[group_name] = results.map do |result|
+      results_hash = results.map do |result|
         result.to_hash thresholds[group_name]
+      end
+      handled_results[group_name] = results_hash.group_by do |result|
+        result[:key]
       end
     end
 
