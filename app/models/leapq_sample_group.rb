@@ -1,7 +1,7 @@
 class LeapqSampleGroup < ApplicationRecord
   enum group: [:lang1, :lang2, :balance]
 
-  def self.createByPhone(phone, group)
+  def self.create_by_phone(phone, group)
     sample = LeapqSample.find_by :phone => phone
     if sample.present?
       sample_group = self.find_or_create_by({

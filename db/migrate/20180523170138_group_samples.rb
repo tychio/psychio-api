@@ -10,7 +10,7 @@ class GroupSamples < ActiveRecord::Migration[5.0]
       '17691131913', '17691142774', '15502937215', '15529307735',
       '18092178990', '15109201682', '18729011283' 
     ].each do |phone|
-      LeapqSampleGroup.createByPhone(phone, :lang1);
+      LeapqSampleGroup.create_by_phone(phone, :lang1);
     end
     
     [
@@ -23,7 +23,7 @@ class GroupSamples < ActiveRecord::Migration[5.0]
       '15771970155', '15771939956', '18729487365', '15304316295',
       '13279959017', '15686065969', '18392111081'
     ].each do |phone|
-      LeapqSampleGroup.createByPhone(phone, :lang2);
+      LeapqSampleGroup.create_by_phone(phone, :lang2);
     end
     
     [
@@ -36,7 +36,7 @@ class GroupSamples < ActiveRecord::Migration[5.0]
       '18792735991', '18792721620', '17809299455', '15229287131',
       '15596656027', '15702930803', '18199328838' 
     ].each do |phone|
-      LeapqSampleGroup.createByPhone(phone, :lang2);
+      LeapqSampleGroup.create_by_phone(phone, :lang2);
     end
   end
 end
