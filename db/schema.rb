@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180329194003) do
+ActiveRecord::Schema.define(version: 20180523165156) do
 
   create_table "analysis_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",                    limit: 50
@@ -114,6 +114,14 @@ ActiveRecord::Schema.define(version: 20180329194003) do
     t.index ["first_language_id"], name: "index_leapq_sample_bilinguals_on_first_language_id", using: :btree
     t.index ["sample_id"], name: "index_leapq_sample_bilinguals_on_sample_id", using: :btree
     t.index ["second_language_id"], name: "index_leapq_sample_bilinguals_on_second_language_id", using: :btree
+  end
+
+  create_table "leapq_sample_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "sample_id"
+    t.integer  "group"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.index ["sample_id"], name: "index_leapq_sample_groups_on_sample_id", using: :btree
   end
 
   create_table "leapq_sample_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -224,6 +232,7 @@ ActiveRecord::Schema.define(version: 20180329194003) do
   add_foreign_key "leapq_sample_bilinguals", "leapq_sample_languages", column: "first_language_id"
   add_foreign_key "leapq_sample_bilinguals", "leapq_sample_languages", column: "second_language_id"
   add_foreign_key "leapq_sample_bilinguals", "leapq_samples", column: "sample_id"
+  add_foreign_key "leapq_sample_groups", "leapq_samples", column: "sample_id"
   add_foreign_key "leapq_sample_infos", "leapq_samples", column: "sample_id"
   add_foreign_key "leapq_sample_languages", "leapq_languages", column: "language_id"
   add_foreign_key "leapq_sample_languages", "leapq_samples", column: "sample_id"
