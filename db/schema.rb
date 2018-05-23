@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180523165156) do
+ActiveRecord::Schema.define(version: 20180523170138) do
 
   create_table "analysis_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",                    limit: 50
-    t.text     "comment",                 limit: 65535
     t.string   "phone",                   limit: 20
     t.string   "qq",                      limit: 20
     t.string   "wechat",                  limit: 50
@@ -40,8 +39,8 @@ ActiveRecord::Schema.define(version: 20180523165156) do
     t.integer  "lang2_l_instruction_age"
     t.integer  "lang1_c_instruction_age"
     t.integer  "lang2_c_instruction_age"
-    t.datetime "created_at",                            default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.datetime "updated_at",                            default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "created_at",                         default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at",                         default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["phone", "qq", "wechat"], name: "index_analysis_groups_on_phone_and_qq_and_wechat", unique: true, using: :btree
   end
 
@@ -222,6 +221,7 @@ ActiveRecord::Schema.define(version: 20180523165156) do
   create_table "pnt_images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.string   "chinese"
+    t.string   "pinyin"
     t.string   "uyghur"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
