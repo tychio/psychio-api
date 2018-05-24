@@ -1,5 +1,5 @@
 class GroupSamples < ActiveRecord::Migration[5.0]
-  def change
+  def up
     [
       '18700922023', '18392619082', '18392890191', '15739362329',
       '18700871702', '13899130829', '18191329937', '15529207360',
@@ -36,7 +36,11 @@ class GroupSamples < ActiveRecord::Migration[5.0]
       '18792735991', '18792721620', '17809299455', '15229287131',
       '15596656027', '15702930803', '18199328838' 
     ].each do |phone|
-      LeapqSampleGroup.create_by_phone(phone, :lang2);
+      LeapqSampleGroup.create_by_phone(phone, :balance);
     end
+  end
+
+  def down
+    LeapqSampleGroup.delete_all
   end
 end
