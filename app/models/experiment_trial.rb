@@ -16,10 +16,13 @@ class ExperimentTrial < ApplicationRecord
   end
 
   def to_hash threshold
-    item = self.attributes.symbolize_keys
+    item = Hash.new
     item[:accuracy] = self.accuracy
+    item[:key] = self.key
     item[:correct] = self.correct
     item[:combination] = self.combination
+    item[:speed] = self.speed
+    item[:seq] = self.seq
     item[:min] = threshold[:min]
     item[:max] = threshold[:max]
     if self.correct.present?
