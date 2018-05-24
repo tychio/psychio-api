@@ -19,6 +19,7 @@ class ExperimentTrial < ApplicationRecord
     item = self.attributes.symbolize_keys
     item[:accuracy] = self.accuracy
     item[:correct] = self.correct
+    item[:combination] = self.combination
     item[:min] = threshold[:min]
     item[:max] = threshold[:max]
     if self.correct.present?
@@ -59,6 +60,32 @@ class ExperimentTrial < ApplicationRecord
       !answer.to_i.zero? == (question['direction'] == 'right')
     when :simon
       !answer.to_i.zero? == (question['color'] == 'red')
+    when :pic
+      !answer.to_i.zero?
+    else
+      false
+    end
+  end
+
+  def combination
+    case self.kind.to_sym
+    when :lex_ug, :lex_cn
+      question['real'] ? 'word' : 'nonword'
+    when :flanker
+      question['congruent']
+    when :simon
+      question['direction']
+    when :pic
+      switch = question['switch'] ? 'switch' : !question['begin'] ? 'keep' : ''
+      lang = question['lang'] == 'chinese' ? 'cn' : 'ug'
+      result = []
+      if switch
+        result.push(switch)
+      end
+      if lang
+        result.push(lang)
+      end
+      result.join '_'
     else
       false
     end
