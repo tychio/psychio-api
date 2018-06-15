@@ -12,7 +12,7 @@ class ExperimentTrial < ApplicationRecord
   end
 
   def self.list kind
-    trials = self
+    trials = self.select('*, lsi.code AS code')
       .joins('LEFT JOIN leapq_samples AS ls ON ls.phone = experiment_trials.key AND ls.is_active ')
       .joins('LEFT JOIN leapq_sample_infos AS lsi ON lsi.sample_id = ls.id ')
       .where({ :kind => kind }).order('lsi.code ASC')
@@ -26,6 +26,7 @@ class ExperimentTrial < ApplicationRecord
     item[:combination] = self.combination
     item[:speed] = self.speed
     item[:seq] = self.seq
+    item[:code] = self.code
     item[:min] = threshold[:min]
     item[:max] = threshold[:max]
     if self.correct.present?
