@@ -12,7 +12,10 @@ class ExperimentTrial < ApplicationRecord
   end
 
   def self.list kind
-    trials = self.where({ :kind => kind })
+    trials = self
+      .joins('LEFT JOIN leapq_samples AS ls ON ls.phone = experiment_trials.key AND ls.is_active ')
+      .joins('LEFT JOIN leapq_sample_infos AS lsi ON lsi.sample_id = ls.id ')
+      .where({ :kind => kind }).order('lsi.code ASC')
   end
 
   def to_hash threshold
