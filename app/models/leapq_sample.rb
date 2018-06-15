@@ -17,6 +17,13 @@ class LeapqSample < ApplicationRecord
     })
   end
 
+  def self.find_by_phone phone
+    self.find_by({
+      :phone => phone,
+      :is_active => 1
+    })
+  end
+
   def get
     languageIds = prepare_language_ids
     levels = prepare_levels languageIds

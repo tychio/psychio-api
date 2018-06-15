@@ -46,7 +46,7 @@ class ExperimentTrial < ApplicationRecord
 
   def group
     @sample = Rails.cache.fetch("sample_#{self.key}", expires_in: 1.minute) do
-      LeapqSample.find_by({ :phone => self.key})
+      LeapqSample.find_by_phone(self.key)
     end
     @sample.leapq_sample_group.group
   end
