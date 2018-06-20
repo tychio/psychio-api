@@ -81,7 +81,13 @@ class ExperimentTrial < ApplicationRecord
     when :flanker
       question['congruent']
     when :simon
-      question['direction']
+      isCon = (question['direction'] == 'left' && question['color'] == 'red') ||
+        (question['direction'] == 'right' && question['color'] == 'blue')
+      if question['direction'] == 'center'
+        'neu'
+      else
+        isCon ? 'con' : 'incon'
+      end
     when :pic
       switch = question['switch'] ? 'switch' : !question['begin'] ? 'keep' : ''
       lang = question['lang'] == 'chinese' ? 'cn' : 'ug'
