@@ -117,9 +117,9 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           END
         ) AS `StimulatesType`,
         IF(`et`.`answer`,'Right','Left') AS `Response`,
-        IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.direction'),1,0)),1,0) AS `Accuracy`,
+        IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.direction') = 'right',1,0)),1,0) AS `Accuracy`,
         `et`.`speed` AS `Speed`,
-        IF(`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.direction'),1,0),
+        IF(`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.direction') = 'right',1,0),
           `et`.`speed`,
           NULL
         ) AS `CorrectResponseSpeed`
@@ -154,9 +154,9 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           END
         ) AS `StimulatesType`,
         IF(`et`.`answer`,'Red','Blue') AS `Response`,
-        IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.color'),1,0)),1,0) AS `Accuracy`,
+        IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'red',1,0)),1,0) AS `Accuracy`,
         `et`.`speed` AS `Speed`,
-        IF(`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.color'),1,0),
+        IF(`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'red',1,0),
           `et`.`speed`,
           NULL
         ) AS `CorrectResponseSpeed`
