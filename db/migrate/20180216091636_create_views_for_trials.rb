@@ -29,7 +29,7 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           NULL
         ) AS `CorrectResponseSpeed`
       FROM `experiment_trials` `et`
-      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key` AND `ls`.`is_active` = 1
       LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
       WHERE (`et`.`kind` = 0);
     SQL
@@ -58,7 +58,7 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           NULL
         ) AS `CorrectResponseSpeed`
       FROM `experiment_trials` `et` 
-      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key` AND `ls`.`is_active` = 1
       LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
       WHERE (`et`.`kind` = 1);
     SQL
@@ -87,7 +87,7 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           NULL
         ) AS `CorrectResponseSpeed`
       FROM `experiment_trials` `et`
-      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key` AND `ls`.`is_active` = 1
       LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
       WHERE (`et`.`kind` = 2);
     SQL
@@ -124,7 +124,7 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           NULL
         ) AS `CorrectResponseSpeed`
       FROM `experiment_trials` `et`
-      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key` AND `ls`.`is_active` = 1
       LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
       WHERE (`et`.`kind` = 3);
     SQL
@@ -137,9 +137,9 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
         `et`.`seq` AS `No.`,
         CONCAT(
           CASE JSON_EXTRACT(`et`.`question`,'$.direction') 
-            WHEN '"left"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'red','Con','Incon') 
-            WHEN '"right"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'blue','Incon','Con') 
-            WHEN '"center"' THEN 'Neutral' 
+            WHEN '"left"' THEN 'Left' 
+            WHEN '"right"' THEN 'Right' 
+            WHEN '"center"' THEN 'Center' 
           END,
           CASE JSON_EXTRACT(`et`.`question`,'$.color')
             WHEN '"red"' THEN 'Red'
@@ -149,7 +149,7 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
         (
           CASE JSON_EXTRACT(`et`.`question`,'$.direction') 
             WHEN '"left"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'red','Con','Incon') 
-            WHEN '"right"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'blue','Incon','Con') 
+            WHEN '"right"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'blue','Con','Incon') 
             WHEN '"center"' THEN 'Neutral' 
           END
         ) AS `StimulatesType`,
@@ -161,7 +161,7 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           NULL
         ) AS `CorrectResponseSpeed`
       FROM `experiment_trials` `et`
-      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key` AND `ls`.`is_active` = 1
       LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
       WHERE (`et`.`kind` = 4);
     SQL
@@ -181,7 +181,7 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           NULL
         ) AS `CorrectResponseSpeed`
       FROM `experiment_trials` `et`
-      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key` AND `ls`.`is_active` = 1
       LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
       WHERE (`et`.`kind` = 5);
     SQL
