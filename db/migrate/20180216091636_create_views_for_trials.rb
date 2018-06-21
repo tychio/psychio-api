@@ -156,6 +156,7 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
       CREATE VIEW `experiment_output_iq`
       AS SELECT
         `et`.`key` AS `Participant_ID`,
+        IF(`lsg`.`group` = 0, 'L1', IF(`lsg`.`group` = 1, 'L2', 'Balance')) AS `group`,
         `et`.`seq` AS `No.`,
         `et`.`question` AS `Stimulates`,
         `et`.`answer` AS `Response`,
