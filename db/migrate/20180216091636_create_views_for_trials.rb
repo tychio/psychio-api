@@ -109,6 +109,13 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
             WHEN '"left"' THEN 'Left'
           END
         ) AS `Stimulates`,
+        (
+          CASE JSON_EXTRACT(`et`.`question`,'$.congruent')
+            WHEN '"con"' THEN 'Con'
+            WHEN '"incon"' THEN 'Incon'
+            WHEN '"neu"' THEN 'Neutral'
+          END
+        ) AS `StimulatesType`,
         IF(`et`.`answer`,'Right','Left') AS `Response`,
         IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.direction'),1,0)),1,0) AS `Accuracy`,
         `et`.`speed` AS `Speed`,
@@ -139,6 +146,13 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
             WHEN '"blue"' THEN 'Blue'
           END
         ) AS `Stimulates`,
+        (
+          CASE JSON_EXTRACT(`et`.`question`,'$.direction') 
+            WHEN '"left"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'red','Con','Incon') 
+            WHEN '"right"' THEN IF(JSON_EXTRACT(`et`.`question`,'$.color') = 'blue','Incon','Con') 
+            WHEN '"center"' THEN 'Neutral' 
+          END
+        ) AS `StimulatesType`,
         IF(`et`.`answer`,'Red','Blue') AS `Response`,
         IF((`et`.`answer` = IF(JSON_EXTRACT(`et`.`question`,'$.color'),1,0)),1,0) AS `Accuracy`,
         `et`.`speed` AS `Speed`,
