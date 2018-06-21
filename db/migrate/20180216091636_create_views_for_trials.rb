@@ -4,6 +4,7 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
       CREATE VIEW `experiment_output_pic`
       AS SELECT
         `et`.`key` AS `Participant_ID`,
+        IF(`lsg`.`group` = 0, 'L1', IF(`lsg`.`group` = 1, 'L2', 'Balance')) AS `group`,
         `et`.`seq` AS `No.`,
         CONCAT(
           IF(JSON_EXTRACT(`et`.`question`,'$.begin'),
@@ -27,13 +28,17 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           `et`.`speed`,
           NULL
         ) AS `CorrectResponseSpeed`
-      FROM `experiment_trials` `et` WHERE (`et`.`kind` = 0);
+      FROM `experiment_trials` `et`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
+      WHERE (`et`.`kind` = 0);
     SQL
 
     execute <<-SQL
       CREATE VIEW `experiment_output_lexcn`
       AS SELECT
         `et`.`key` AS `Participant_ID`,
+        IF(`lsg`.`group` = 0, 'L1', IF(`lsg`.`group` = 1, 'L2', 'Balance')) AS `group`,
         `et`.`seq` AS `No.`,
         CONCAT(
           IF(JSON_EXTRACT(`et`.`question`,'$.real'),
@@ -52,13 +57,17 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           `et`.`speed`,
           NULL
         ) AS `CorrectResponseSpeed`
-      FROM `experiment_trials` `et` WHERE (`et`.`kind` = 1);
+      FROM `experiment_trials` `et` 
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
+      WHERE (`et`.`kind` = 1);
     SQL
 
     execute <<-SQL
       CREATE VIEW `experiment_output_lexug`
       AS SELECT
         `et`.`key` AS `Participant_ID`,
+        IF(`lsg`.`group` = 0, 'L1', IF(`lsg`.`group` = 1, 'L2', 'Balance')) AS `group`,
         `et`.`seq` AS `No.`,
         CONCAT(
           IF(JSON_EXTRACT(`et`.`question`,'$.real'),
@@ -77,13 +86,17 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           `et`.`speed`,
           NULL
         ) AS `CorrectResponseSpeed`
-      FROM `experiment_trials` `et` WHERE (`et`.`kind` = 2);
+      FROM `experiment_trials` `et`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
+      WHERE (`et`.`kind` = 2);
     SQL
 
     execute <<-SQL
       CREATE VIEW `experiment_output_flanker`
       AS SELECT
         `et`.`key` AS `Participant_ID`,
+        IF(`lsg`.`group` = 0, 'L1', IF(`lsg`.`group` = 1, 'L2', 'Balance')) AS `group`,
         `et`.`seq` AS `No.`,
         CONCAT(
           CASE JSON_EXTRACT(`et`.`question`,'$.congruent')
@@ -103,13 +116,17 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           `et`.`speed`,
           NULL
         ) AS `CorrectResponseSpeed`
-      FROM `experiment_trials` `et` WHERE (`et`.`kind` = 3);
+      FROM `experiment_trials` `et`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
+      WHERE (`et`.`kind` = 3);
     SQL
 
     execute <<-SQL
       CREATE VIEW `experiment_output_simon`
       AS SELECT
         `et`.`key` AS `Participant_ID`,
+        IF(`lsg`.`group` = 0, 'L1', IF(`lsg`.`group` = 1, 'L2', 'Balance')) AS `group`,
         `et`.`seq` AS `No.`,
         CONCAT(
           CASE JSON_EXTRACT(`et`.`question`,'$.direction') 
@@ -129,7 +146,10 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           `et`.`speed`,
           NULL
         ) AS `CorrectResponseSpeed`
-      FROM `experiment_trials` `et` WHERE (`et`.`kind` = 4);
+      FROM `experiment_trials` `et`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
+      WHERE (`et`.`kind` = 4);
     SQL
 
     execute <<-SQL
@@ -145,7 +165,10 @@ class CreateViewsForTrials < ActiveRecord::Migration[5.0]
           `et`.`speed`,
           NULL
         ) AS `CorrectResponseSpeed`
-      FROM `experiment_trials` `et` WHERE (`et`.`kind` = 5);
+      FROM `experiment_trials` `et`
+      LEFT JOIN `leapq_samples` AS `ls` ON `ls`.`phone` = `et`.`key`
+      LEFT JOIN `leapq_sample_groups` AS `lsg` ON `lsg`.`sample_id` = `ls`.`id`
+      WHERE (`et`.`kind` = 5);
     SQL
   end
 
