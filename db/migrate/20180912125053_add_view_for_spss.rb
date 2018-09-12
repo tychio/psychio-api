@@ -141,9 +141,33 @@ class AddViewForSpss < ActiveRecord::Migration[5.0]
         WHERE sample.is_active = 1 AND result.id IS NOT NULL
         ORDER BY lsg.group, info.code;
     SQL
+
+    execute <<-SQL
+      CREATE VIEW `leapq_results_all`
+      AS SELECT info.*
+        ,lv.L1Contact, lv.L1PRead, lv.L1PSpeak, lv.L1PWrite, lv.L2Contact, lv.L2PRead, lv.L2PSpeak, lv.L2PWrite, lv.L3Contact, lv.L3PRead, lv.L3PSpeak, lv.L3PWrite
+        ,ag.L1exposed, ag.L1school, ag.L1Lang, ag.L1Content, ag.L2exposed, ag.L2school, ag.L2Lang, ag.L2Content, ag.L3exposed, ag.L3school, ag.L3Lang, ag.L3Content 
+        ,pr.L1school, pr.L1home, pr.L1community, pr.L2school, pr.L2home, pr.L2community, pr.L3school, pr.L3home, pr.L3community, pr.biSchool, pr.biHome, pr.biCommunity 
+        ,sc.L1speak, sc.L1listen, sc.L1read, sc.L2speak, sc.L2listen, sc.L2read, sc.L3speak, sc.L3listen, sc.L3read
+          ,sc.L1famimp, sc.L1frienimp, sc.L1schimp, sc.L1radioimp, sc.L1readimp, sc.L1tvimp, sc.L1netimp, sc.L1sociedimp
+          ,sc.L2famimp, sc.L2frienimp, sc.L2schimp, sc.L2radioimp, sc.L2readimp, sc.L2tvimp, sc.L2netimp, sc.L2sociedimp
+          ,sc.L3famimp, sc.L3frienimp, sc.L3schimp, sc.L3radioimp, sc.L3readimp, sc.L3tvimp, sc.L3netimp, sc.L3sociedimp
+          ,sc.L1famexpo, sc.L1frienexpo, sc.L1schexpo, sc.L1radioexpo, sc.L1readexpo, sc.L1tvexpo, sc.L1netexpo, sc.L1sociedexpo
+          ,sc.L2famexpo, sc.L2frienexpo, sc.L2schexpo, sc.L2radioexpo, sc.L2readexpo, sc.L2tvexpo, sc.L2netexpo, sc.L2sociedexpo
+          ,sc.L3famexpo, sc.L3frienexpo, sc.L3schexpo, sc.L3radioexpo, sc.L3readexpo, sc.L3tvexpo, sc.L3netexpo, sc.L3sociedexpo
+          ,sc.L2accself, sc.L2accother, sc.L3accself, sc.L3accother 
+      FROM leapq_results_info info
+      JOIN leapq_results_level  lv ON lv.sample_id = info.sample_id
+      JOIN leapq_results_age    ag ON ag.sample_id = info.sample_id
+      JOIN leapq_results_period   pr ON pr.sample_id = info.sample_id
+      JOIN leapq_results_score  sc ON sc.sample_id = info.sample_id;
+    SQL
   end
 
   def down
+    execute <<-SQL
+      DROP VIEW `leapq_results_all`
+    SQL
     execute <<-SQL
       DROP VIEW `leapq_results_info`
     SQL
