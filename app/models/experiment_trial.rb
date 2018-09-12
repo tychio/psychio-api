@@ -42,7 +42,7 @@ class ExperimentTrial < ApplicationRecord
   end
 
   def self.thresholds records
-    groups = records.group_by { |record| record.group }
+    groups = records.group_by { |record| record.key }
     groups.transform_values do |records|
       self.threshold records
     end
@@ -62,13 +62,13 @@ class ExperimentTrial < ApplicationRecord
   def accuracy
     case self.kind.to_sym
     when :lex_ug, :lex_cn
-      !answer.to_i.zero? == question['real']
+      answer.present? && !answer.to_i.zero? == question['real']
     when :flanker
-      !answer.to_i.zero? == (question['direction'] == 'right')
+      answer.present? && !answer.to_i.zero? == (question['direction'] == 'right')
     when :simon
-      !answer.to_i.zero? == (question['color'] == 'red')
+      answer.present? && !answer.to_i.zero? == (question['color'] == 'red')
     when :pic
-      !answer.to_i.zero?
+      answer.present? && !answer.to_i.zero?
     else
       false
     end
@@ -108,24 +108,14 @@ class ExperimentTrial < ApplicationRecord
   def self.threshold records
     accuracy_count = 0  
     sum = records.sum do |record|
-      correct_speed = record.correct
-      if correct_speed.present?
-        accuracy_count += 1
-        correct_speed
-      else
-        0
-      end
+      accuracy_count += 1
+      record.speed
     end
 
     mean = (sum / accuracy_count).to_f
 
     variance = records.sum do |record|
-      correct_speed = record.correct
-      if correct_speed.present?
-        (correct_speed - mean) ** 2
-      else
-        0
-      end
+      (record.speed - mean) ** 2
     end
 
     standard = Math.sqrt (variance / (accuracy_count - 1)).to_f
