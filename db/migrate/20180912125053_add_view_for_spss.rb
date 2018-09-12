@@ -143,10 +143,10 @@ class AddViewForSpss < ActiveRecord::Migration[5.0]
     SQL
 
     execute <<-SQL
-      CREATE VIEW `leapq_results_all`
+      CREATE VIEW `leapq_results`
       AS SELECT info.*
         ,lv.L1Contact, lv.L1PRead, lv.L1PSpeak, lv.L1PWrite, lv.L2Contact, lv.L2PRead, lv.L2PSpeak, lv.L2PWrite, lv.L3Contact, lv.L3PRead, lv.L3PSpeak, lv.L3PWrite
-        ,ag.L1exposed, ag.L1school, ag.L1Lang, ag.L1Content, ag.L2exposed, ag.L2school, ag.L2Lang, ag.L2Content, ag.L3exposed, ag.L3school, ag.L3Lang, ag.L3Content 
+        ,ag.L1exposed, ag.L1school AS L1Aschool, ag.L1Lang, ag.L1Content, ag.L2exposed, ag.L2school AS L2Aschool, ag.L2Lang, ag.L2Content, ag.L3exposed, ag.L3school AS L3Aschool, ag.L3Lang, ag.L3Content 
         ,pr.L1school, pr.L1home, pr.L1community, pr.L2school, pr.L2home, pr.L2community, pr.L3school, pr.L3home, pr.L3community, pr.biSchool, pr.biHome, pr.biCommunity 
         ,sc.L1speak, sc.L1listen, sc.L1read, sc.L2speak, sc.L2listen, sc.L2read, sc.L3speak, sc.L3listen, sc.L3read
           ,sc.L1famimp, sc.L1frienimp, sc.L1schimp, sc.L1radioimp, sc.L1readimp, sc.L1tvimp, sc.L1netimp, sc.L1sociedimp
