@@ -108,8 +108,12 @@ class ExperimentTrial < ApplicationRecord
   def self.threshold records
     accuracy_count = 0  
     sum = records.sum do |record|
-      accuracy_count += 1
-      record.speed
+      if record.answer.present?
+        accuracy_count += 1
+        record.speed
+      else 
+        0
+      end
     end
 
     mean = (sum / accuracy_count).to_f
