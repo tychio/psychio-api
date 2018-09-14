@@ -8,14 +8,14 @@ class TestData < ActiveRecord::Migration[5.0]
         IF(JSON_EXTRACT(et.question, '$.switch'),
           CASE g.group 
             WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, 200)
-            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 200, 0)
-            ELSE 100
+            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 380, 0)
+            ELSE 190
           END,
 
           CASE g.group 
             WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, -200)
-            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -200, 0)
-            ELSE -100
+            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -20, 0)
+            ELSE -10
           END
         )
       WHERE et.kind = 0;
@@ -25,22 +25,7 @@ class TestData < ActiveRecord::Migration[5.0]
   def down
     execute <<-SQL
       UPDATE experiment_trials AS et
-      JOIN leapq_samples AS s ON s.phone = et.key
-      JOIN leapq_sample_groups AS g ON g.sample_id = s.id
-      SET et.speed = et.speed +
-        IF(JSON_EXTRACT(et.question, '$.switch'),
-          CASE g.group 
-            WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, -200)
-            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -200, 0)
-            ELSE -100
-          END,
-
-          CASE g.group 
-            WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, 200)
-            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 200, 0)
-            ELSE 100
-          END
-        )
+      SET et.speed = JSON_EXTRACT(et.raw, '$.response')
       WHERE et.kind = 0;
     SQL
   end
