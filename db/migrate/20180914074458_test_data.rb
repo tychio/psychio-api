@@ -6,16 +6,17 @@ class TestData < ActiveRecord::Migration[5.0]
       JOIN leapq_sample_groups AS g ON g.sample_id = s.id
       SET et.speed = et.speed +
         IF(JSON_EXTRACT(et.question, '$.switch'),
-          IF( 
-            ((JSON_EXTRACT(et.question, '$.lang') = 'chinese') AND g.group = 0)
-            OR ((JSON_EXTRACT(et.question, '$.lang') = 'uyghur') AND g.group = 1)
-            , 0, IF(g.group = 2, 100, 200)
-          ),
-          IF( 
-            ((JSON_EXTRACT(et.question, '$.lang') = 'chinese') AND g.group = 0)
-            OR ((JSON_EXTRACT(et.question, '$.lang') = 'uyghur') AND g.group = 1)
-            , -200, IF(g.group = 2, -100, 0)
-          )
+          CASE g.group 
+            WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, 200)
+            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 200, 0)
+            ELSE 100
+          END,
+
+          CASE g.group 
+            WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, -200)
+            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -200, 0)
+            ELSE -100
+          END
         )
       WHERE et.kind = 0;
     SQL
@@ -28,16 +29,17 @@ class TestData < ActiveRecord::Migration[5.0]
       JOIN leapq_sample_groups AS g ON g.sample_id = s.id
       SET et.speed = et.speed +
         IF(JSON_EXTRACT(et.question, '$.switch'),
-          IF( 
-            ((JSON_EXTRACT(et.question, '$.lang') = 'chinese') AND g.group = 0)
-            OR ((JSON_EXTRACT(et.question, '$.lang') = 'uyghur') AND g.group = 1)
-            , 0, IF(g.group = 2, -100, -200)
-          ),
-          IF( 
-            ((JSON_EXTRACT(et.question, '$.lang') = 'chinese') AND g.group = 0)
-            OR ((JSON_EXTRACT(et.question, '$.lang') = 'uyghur') AND g.group = 1)
-            , 200, IF(g.group = 2, 100, 0)
-          )
+          CASE g.group 
+            WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, -200)
+            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -200, 0)
+            ELSE -100
+          END,
+
+          CASE g.group 
+            WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, 200)
+            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 200, 0)
+            ELSE 100
+          END
         )
       WHERE et.kind = 0;
     SQL
