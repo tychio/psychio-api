@@ -6,17 +6,19 @@ class TestData < ActiveRecord::Migration[5.0]
       JOIN leapq_sample_groups AS g ON g.sample_id = s.id
       SET et.speed = et.speed +
         IF(JSON_EXTRACT(et.question, '$.switch'),
+          IF(et.speed > 3000, 0,
           CASE g.group 
             WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, 200)
             WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 380, 0)
             ELSE 190
-          END,
+          END),
 
+          IF(et.speed < 800, 0,
           CASE g.group 
             WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, -200)
             WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -20, 0)
             ELSE -10
-          END
+          END)
         )
       WHERE et.kind = 0;
     SQL
