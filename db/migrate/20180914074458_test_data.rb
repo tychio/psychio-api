@@ -8,16 +8,16 @@ class TestData < ActiveRecord::Migration[5.0]
         IF(JSON_EXTRACT(et.question, '$.switch'),
           IF(et.speed > 3000, 0,
           CASE g.group 
-            WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, 200)
-            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 380, 0)
-            ELSE 190
+            WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 43,    66)
+            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 56,    76)
+            ELSE        IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 41,    36)
           END),
 
           IF(et.speed < 800, 0,
           CASE g.group 
-            WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0, -200)
-            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -20, 0)
-            ELSE -10
+            WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0,    -36)
+            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -56,   -36)
+            ELSE        IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -6,    -16)
           END)
         )
       WHERE et.kind = 0;
