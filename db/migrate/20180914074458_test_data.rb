@@ -16,7 +16,7 @@ class TestData < ActiveRecord::Migration[5.0]
           IF(et.speed < 800, 0,
           CASE g.group 
             WHEN 0 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', 0,    -36)
-            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -56,   -26)
+            WHEN 1 THEN IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -56,   -31)
             ELSE        IF(JSON_EXTRACT(et.question, '$.lang') = 'chinese', -6,    -16)
           END)
         )
