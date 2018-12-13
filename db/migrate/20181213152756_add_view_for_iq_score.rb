@@ -4,7 +4,7 @@ class AddViewForIqScore < ActiveRecord::Migration[5.0]
       CREATE VIEW `leapq_sample_iq_score`
       AS SELECT 
         et.key AS `Participant_ID`,
-        MIN(lsg.group) AS `Group`,
+        IF(MIN(lsg.group) = 0, 'L1', IF(MIN(lsg.group) = 1, 'L2', 'Balance')) AS `Group`,
         MIN(lsi.code) AS `Code`,
         COUNT( IF(et.question = et.answer, 1, NULL) ) AS `IQ Score`
       FROM experiment_trials AS et
