@@ -29,6 +29,7 @@ class ExperimentTrial < ApplicationRecord
     item[:code] = self.code
     item[:min] = threshold[:min]
     item[:max] = threshold[:max]
+    item[:std] = threshold[:std]
     if self.correct.present?
       overMax = item[:correct] > threshold[:max]
       lessMin = item[:correct] < threshold[:min]
@@ -128,7 +129,8 @@ class ExperimentTrial < ApplicationRecord
     max = mean + (2.5 * standard)
     {
       :min => min,
-      :max => max
+      :max => max,
+      :std => standard
     }
   end
 
