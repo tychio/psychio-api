@@ -120,7 +120,11 @@ class ExperimentTrial < ApplicationRecord
     mean = (sum / accuracy_count).to_f
 
     variance = records.sum do |record|
-      (record.speed - mean) ** 2
+      if record.answer.present?
+        (record.speed - mean) ** 2
+      else 
+        0
+      end
     end
 
     standard = Math.sqrt (variance / (accuracy_count - 1)).to_f
@@ -130,8 +134,36 @@ class ExperimentTrial < ApplicationRecord
     {
       :min => min,
       :max => max,
-      :std => standard
+      :std => self.efficient_standard(records, min, max)
     }
+  end
+
+  def self.efficient_standard(records, min, max)
+    accuracy_count = 0
+    sum = records.sum do |record|
+      correct = record.answer.present? && record.answer
+      inlier = record.speed > min && record.speed < max
+      if (correct && inlier)
+        accuracy_count += 1
+        record.speed
+      else 
+        0
+      end
+    end
+
+    mean = (sum / accuracy_count).to_f
+
+    variance = records.sum do |record|
+      correct = record.answer.present? && record.answer
+      inlier = record.speed > min && record.speed < max
+      if (correct && inlier)
+        (record.speed - mean) ** 2
+      else 
+        0
+      end
+    end
+
+    Math.sqrt (variance / (accuracy_count - 1)).to_f
   end
 
   def self.merge results
