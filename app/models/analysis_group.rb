@@ -85,7 +85,9 @@ class AnalysisGroup < ApplicationRecord
         score[key] = self.rate(score[:score], key)
         sumSelfScore += score[key]
       end
-      score[:score] = (((sumSelfScore / 3).to_f + (sumUseScore / 4).to_f) / 2).to_f
+      score[:self_score] = (sumSelfScore / 3).to_f
+      score[:use_score] = (sumUseScore / 4).to_f
+      score[:score] = ((score[:self_score] + score[:use_score]) / 2).to_f
       score[:balance] = (score[:score] - 1).abs
     end
     scores
