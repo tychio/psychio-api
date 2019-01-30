@@ -48,26 +48,53 @@ class AnalysisGroup < ApplicationRecord
   end
 
   def self.standard
-    records = AnalysisGroup.attendees.to_a
+    records = self.attendees.to_a
     sums = self.sum records
     means = self.mean(sums, records.size)
     variances = self.variance(records, means)
     deviations = self.deviation(variances, records.size)
     scores = self.score(records, deviations, means)
     skewing = self.skewing scores
-    self.result(scores, skewing)
+    {
+      :results => self.result(scores, skewing),
+      :satistics => self.satistics(scores)
+    }
   end
 
   def self.attendees
-    AnalysisGroup.joins("
+    self.joins("
       INNER JOIN leapq_samples ls 
         ON ls.phone = analysis_groups.phone
       INNER JOIN leapq_sample_groups lsg 
         ON lsg.sample_id = ls.id
+    ").select("
+      analysis_groups.*,
+      lsg.group
     ")
   end
 
   private
+  def self.satistics(scores)
+    scores.group_by do |record|
+      {
+        0 => 'lang1',
+        1 => 'lang2',
+        2 => 'balance'
+      }[record[:group]]
+    end.map do |group, groupScores|
+      sums = self.sum(groupScores, 'each_statistics')
+      means = self.mean(sums, groupScores.size, 'each_statistics')
+      variances = self.variance(groupScores, means, 'each_statistics')
+      deviations = self.deviation(variances, groupScores.size, 'each_statistics')
+      {
+        :sums => sums,
+        :means => means,
+        :variances => variances,
+        :deviations => deviations
+      }
+    end
+  end
+
   def self.result(scores, skewing)
     scores.each do |score| 
       score[:score].each do |key, value| 
@@ -118,7 +145,7 @@ class AnalysisGroup < ApplicationRecord
   def self.score(records, deviations, means)
     records.map do |record|
       score = {}
-      self.each([record]) do |item, key|
+      self.send('each_results', [record]) do |item, key|
         if item[key]
           score[key] = ((item[key] - means[key]) / deviations[key]).to_f
         end
@@ -128,6 +155,7 @@ class AnalysisGroup < ApplicationRecord
         :phone => record[:phone],
         :qq => record[:qq],
         :wechat => record[:wechat],
+        :group => record[:group],
         :lang1_start_age => record[:lang1_start_age],
         :lang2_start_age => record[:lang2_start_age],
         :lang1_learn_age => record[:lang1_learn_age],
@@ -141,17 +169,17 @@ class AnalysisGroup < ApplicationRecord
     end
   end
 
-  def self.deviation(variances, size)
+  def self.deviation(variances, size, eachMethodName = 'each_results')
     deviations = {}
-    self.each([variances]) do |item, key|
+    self.send(eachMethodName, [variances]) do |item, key|
       deviations[key] = Math.sqrt((item[key] / (size - 1)).to_f)
     end
     deviations
   end
 
-  def self.variance(records, mean)
+  def self.variance(records, mean, eachMethodName = 'each_results')
     variances = {}
-    self.each(records) do |record, key|
+    self.send(eachMethodName, records) do |record, key|
       variances[key] = variances[key] || 0
       if record[key]
         variances[key] += (record[key] - mean[key]) ** 2
@@ -160,17 +188,17 @@ class AnalysisGroup < ApplicationRecord
     variances
   end
 
-  def self.mean(sums, size)
+  def self.mean(sums, size, eachMethodName = 'each_results')
     means = {}
-    self.each([sums]) do |item, key|
+    self.send(eachMethodName, [sums]) do |item, key|
       means[key] = (item[key] / size).to_f
     end
     means
   end
 
-  def self.sum records
+  def self.sum (records, eachMethodName = 'each_results')
     sums = {}
-    self.each(records) do |record, key|
+    self.send(eachMethodName, records) do |record, key|
       sums[key] = sums[key] || 0
       if record[key]
         sums[key] += record[key]
@@ -179,7 +207,7 @@ class AnalysisGroup < ApplicationRecord
     sums
   end
 
-  def self.each records
+  def self.each_results records
     records.each do |record|
       [
         :lang1_reading_use,       :lang2_reading_use,
@@ -189,6 +217,16 @@ class AnalysisGroup < ApplicationRecord
         :lang1_reading_self,      :lang2_reading_self,
         :lang1_speaking_self,     :lang2_speaking_self,
         :lang1_listening_self,    :lang2_listening_self
+      ].each do |key|
+        yield(record, key)
+      end
+    end
+  end
+
+  def self.each_statistics records
+    records.each do |record|
+      [
+        :self_score, :use_score
       ].each do |key|
         yield(record, key)
       end
