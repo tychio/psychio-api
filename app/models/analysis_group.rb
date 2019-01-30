@@ -57,7 +57,7 @@ class AnalysisGroup < ApplicationRecord
     skewing = self.skewing scores
     {
       :results => self.result(scores, skewing),
-      :satistics => self.satistics(scores)
+      :statistics => self.statistics(scores)
     }
   end
 
@@ -74,23 +74,24 @@ class AnalysisGroup < ApplicationRecord
   end
 
   private
-  def self.satistics(scores)
+  def self.statistics(scores)
     scores.group_by do |record|
       {
         0 => 'lang1',
         1 => 'lang2',
         2 => 'balance'
       }[record[:group]]
-    end.map do |group, groupScores|
+    end.map do |groupName, groupScores|
       sums = self.sum(groupScores, 'each_statistics')
       means = self.mean(sums, groupScores.size, 'each_statistics')
       variances = self.variance(groupScores, means, 'each_statistics')
       deviations = self.deviation(variances, groupScores.size, 'each_statistics')
       {
-        :sums => sums,
-        :means => means,
-        :variances => variances,
-        :deviations => deviations
+        :group => groupName,
+        :means_self_score => means[:self_score],
+        :means_use_score => means[:use_score],
+        :deviations_self_score => deviations[:self_score],
+        :deviations_use_score => deviations[:use_score]
       }
     end
   end
