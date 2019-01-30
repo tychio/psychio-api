@@ -48,7 +48,7 @@ class AnalysisGroup < ApplicationRecord
   end
 
   def self.standard
-    records = AnalysisGroup.all.to_a
+    records = AnalysisGroup.attendees.to_a
     sums = self.sum records
     means = self.mean(sums, records.size)
     variances = self.variance(records, means)
@@ -56,6 +56,15 @@ class AnalysisGroup < ApplicationRecord
     scores = self.score(records, deviations, means)
     skewing = self.skewing scores
     self.result(scores, skewing)
+  end
+
+  def self.attendees
+    AnalysisGroup.joins("
+      INNER JOIN leapq_samples ls 
+        ON ls.phone = analysis_groups.phone
+      INNER JOIN leapq_sample_groups lsg 
+        ON lsg.sample_id = ls.id
+    ")
   end
 
   private
