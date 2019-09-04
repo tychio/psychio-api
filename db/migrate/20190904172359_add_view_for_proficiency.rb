@@ -1,7 +1,7 @@
 class AddViewForProficiency < ActiveRecord::Migration[5.0]
    def up
     execute <<-SQL
-      CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `leapq_results_percskill` AS
+      CREATE VIEW `leapq_results_percskill` AS
       SELECT
         `lpercent`.`id` AS `id`,
         `lpercent`.`sample_id` AS `sample_id`,
@@ -18,8 +18,10 @@ class AddViewForProficiency < ActiveRecord::Migration[5.0]
         LEFT JOIN `leapq_sample_languages` `langlabel` ON((`lskill`.`sample_language_id` = `langlabel`.`id`)))
         JOIN `leapq_sample_groups` `realparticipant` ON((`lpercent`.`sample_id` = `realparticipant`.`sample_id`)))
       WHERE (`langlabel`.`language_id` IN (1, 2, 3));
-
-      CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `leapq_results_generalpercskill` AS
+    SQL
+    
+    execute <<-SQL
+      CREATE VIEW `leapq_results_generalpercskill` AS
       SELECT `leapq_results_percskill`.`id` AS `id`,
         `leapq_results_percskill`.`sample_id` AS `sample_id`,
         `leapq_results_percskill`.`sample_language_id` AS `sample_language_id`,
@@ -37,15 +39,17 @@ class AddViewForProficiency < ActiveRecord::Migration[5.0]
         `psychio`.`leapq_results_percskill`
           LEFT JOIN (
             SELECT `leapq_results_percskill`.`sample_id` AS `sample_id`,
-              sum(`leapq_results_percskill`.`speakskill`) AS `3Lspeak`,
-              sum(`leapq_results_percskill`.`listenskill`) AS `3Llisten`,
-              sum(`leapq_results_percskill`.`readskill`) AS `3Lread`
+              SUM(`leapq_results_percskill`.`speakskill`) AS `3Lspeak`,
+              SUM(`leapq_results_percskill`.`listenskill`) AS `3Llisten`,
+              SUM(`leapq_results_percskill`.`readskill`) AS `3Lread`
             FROM `psychio`.`leapq_results_percskill`
             GROUP BY `leapq_results_percskill`.`sample_id`
         ) AS `sumskills` ON `leapq_results_percskill`.`sample_id` = `sumskills`.`sample_id`
       );
-
-      CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `leapq_results_finalpercskill` AS
+    SQL
+    
+    execute <<-SQL
+      CREATE VIEW `leapq_results_finalpercskill` AS
       SELECT
         `intepercskill`.`id` AS `id`,
         `intepercskill`.`sample_id` AS `sample_id`,
@@ -105,9 +109,9 @@ class AddViewForProficiency < ActiveRecord::Migration[5.0]
 
   def down
     execute <<-SQL
-      DROP VIEW `leapq_results_percskill`
-      DROP VIEW `leapq_results_generalpercskill`
-      DROP VIEW `leapq_results_finalpercskill`
+      DROP VIEW `leapq_results_percskill`;
+      DROP VIEW `leapq_results_generalpercskill`;
+      DROP VIEW `leapq_results_finalpercskill`;
     SQL
   end
 end
