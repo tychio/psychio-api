@@ -110,7 +110,11 @@ class AddViewForProficiency < ActiveRecord::Migration[5.0]
   def down
     execute <<-SQL
       DROP VIEW `leapq_results_percskill`;
+    SQL
+    execute <<-SQL
       DROP VIEW `leapq_results_generalpercskill`;
+    SQL
+    execute <<-SQL
       DROP VIEW `leapq_results_finalpercskill`;
     SQL
   end

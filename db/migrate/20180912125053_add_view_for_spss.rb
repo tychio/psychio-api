@@ -166,9 +166,6 @@ class AddViewForSpss < ActiveRecord::Migration[5.0]
 
   def down
     execute <<-SQL
-      DROP VIEW `leapq_results_all`
-    SQL
-    execute <<-SQL
       DROP VIEW `leapq_results_info`
     SQL
     execute <<-SQL
@@ -182,6 +179,9 @@ class AddViewForSpss < ActiveRecord::Migration[5.0]
     SQL
     execute <<-SQL
       DROP VIEW `leapq_results_score`
+    SQL
+    execute <<-SQL
+      DROP VIEW `leapq_results`
     SQL
   end
 end
